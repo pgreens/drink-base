@@ -1,0 +1,147 @@
+@prefix : <http://kb.liquorpicker.com/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix bevon: <http://rdfs.co/bevon/> .
+@prefix food: <http://data.lirmm.fr/ontologies/food#> .
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+
+## Classes
+
+:Bitters a owl:Class ;
+  rdfs:subClassOf bevon:FermentedBeverage ;
+  skos:prefLabel "Bitters"@en ;
+  skos:definition "TBD" ;
+  rdfs:seeAlso <https://en.wikipedia.org/wiki/Bitters> .
+
+:AromaticBitters a owl:Class ;
+  rdfs:subClassOf bevon:FermentedBeverage ;
+  skos:prefLabel "Aromatic bitters"@en ;
+  skos:definition "TBD" .
+
+:Curaçao a owl:Class ;
+  rdfs:subClassOf bevon:Liqueur ;
+  skos:prefLabel "Curaçao"@en ;
+  skos:definition "TBD" ;
+  rdfs:seeAlso <https://en.wikipedia.org/wiki/Cura%C3%A7ao_(liqueur)> .
+
+## Individuals
+
+
+## Ingredients ##
+
+### Liquor ###
+
+:Bourbon a bevon:BourbonWhiskey ;
+  bevon:name "Bourbon"@en .
+
+:AngosturaBitters a :AromaticBitters ;
+  bevon:name "Angostura Bitters"@en ;
+  rdfs:seeAlso <https://en.wikipedia.org/wiki/Angostura_bitters> .
+
+:Cognac a bevon:Cognac ;
+  bevon:name "Cognac"@en .
+
+:DryCuraçao a :Curaçao ;
+  bevon:name "Dry Curaçao"@en ;
+  rdfs:seeAlso <https://en.wikipedia.org/wiki/Cura%C3%A7ao_(liqueur)> .
+
+### Syrup ###
+
+:SimpleSyrup a food:food ;
+  bevon:name "Simple syrup"@en .
+
+### Fruit ###
+
+:LemonTwist a food:food ;
+  bevon:name "Lemon twist"@en .
+
+:OrangeTwist a food:food ;
+  bevon:name "Orange twist"@en .
+
+:FreshLemonJuice a food:food ;
+  bevon:name "Fresh lemon juice"@en .
+
+## Cocktails ##
+
+# common unit codes: http://wiki.goodrelations-vocabulary.org/Documentation/UN/CEFACT_Common_Codes
+
+:OldFashioned a owl:NamedIndividual , bevon:Cocktail ;
+  bevon:name "Old Fashioned" ;
+  bevon:description: "" ;
+  bevon:ingredient [
+    a food:Ingredient ;
+    bevon:food :Bourbon ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "2"^^xsd:int
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :AngusturaAromaticBitters ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "dash" ;
+      gr:hasValue "2"^^xsd:int
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :SimpleSyrup ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "G25" ; # teaspoon
+      gr:hasValue "1"^^xsd:int
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :OrangeTwist ;
+    bevon:quantity 1
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :LemonTwist ;
+    bevon:quantity 1
+  ] .
+
+
+:SideCar a owl:NamedIndividual , bevon:Cocktail ;
+  bevon:name "Side car" ;
+  bevon:description: "" ;
+  bevon:ingredient [
+    a food:Ingredient ;
+    bevon:food :Cognac ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "1.5"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :DryCuraçao ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "1"^^xsd:int
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :FreshLemonJuice ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "0.75"^^xsd:int
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :OrangeTwist ;
+    bevon:quantity 1
+  ] .
