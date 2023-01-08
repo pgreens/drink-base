@@ -17,7 +17,7 @@
   rdfs:seeAlso <https://en.wikipedia.org/wiki/Bitters> .
 
 :AromaticBitters a owl:Class ;
-  rdfs:subClassOf bevon:FermentedBeverage ;
+  rdfs:subClassOf :Bitters ;
   skos:prefLabel "Aromatic bitters"@en ;
   skos:definition "TBD" .
 
@@ -30,7 +30,7 @@
 ## Individuals
 
 
-## Ingredients ##
+## Food things ##
 
 ### Liquor ###
 
