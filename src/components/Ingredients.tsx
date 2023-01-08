@@ -1,32 +1,26 @@
 import React from "react";
-import {
-  displayNameFor,
-  JsonLdObject,
-  JsonLdString,
-  stringFrom,
-} from "../jsonld";
+import { Ingredient } from "../ingredients";
+import { displayNameForFood } from "../jsonld/food";
 
-export interface Ingredient extends JsonLdObject {
-  "http://rdfs.co/bevon/name"?: JsonLdString;
+export interface OnAddIngredientEventHandler {
+  (ingredient: Ingredient): any;
 }
-
 export default function Ingredients({
   ingredients,
+  onAddIngredientHandler,
 }: {
   ingredients: Ingredient[];
+  onAddIngredientHandler: OnAddIngredientEventHandler;
 }) {
   return (
     <ul>
       {ingredients.map((i) => (
-        <li key={i["@id"]}>{displayNameForIngredient(i, "en")}</li>
+        <li key={i.food["@id"]}>
+          <button onClick={(event) => onAddIngredientHandler(i)}>
+            {displayNameForFood(i.food, "en")}
+          </button>
+        </li>
       ))}
     </ul>
   );
-}
-
-function displayNameForIngredient(o: Ingredient, lang: string): string {
-  if (o["http://rdfs.co/bevon/name"]) {
-    return stringFrom(o["http://rdfs.co/bevon/name"], lang);
-  }
-  return displayNameFor(o, lang);
 }
