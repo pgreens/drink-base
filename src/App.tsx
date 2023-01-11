@@ -4,6 +4,7 @@ import { addIngredient, Glass } from "./glass";
 import * as foods from "./food.json";
 import { defaultIngredients } from "./ingredients";
 import GlassText from "./components/GlassText";
+import GlassWebGL from "./components/GlassWebGL";
 
 const ingredients = defaultIngredients(foods);
 
@@ -22,6 +23,7 @@ export function App(): JSX.Element {
         }
       />
       <GlassText glass={glass} />
+      <GlassWebGL glass={glass} />
     </>
   );
 }
