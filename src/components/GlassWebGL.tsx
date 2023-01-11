@@ -1,6 +1,7 @@
 import React from "react";
 import { Glass } from "../glass";
 import { displayNameForIngredient } from "../ingredients";
+
 // import * as THREE,{
 //   AmbientLight,
 //   BoxGeometry,
@@ -22,7 +23,6 @@ import { displayNameForIngredient } from "../ingredients";
 import * as THREE from "three";
 // import { RGBELoader } from "../RGBELoader";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
-import { EXRLoader } from "three/examples/jsm/loaders/EXRLoader";
 
 export default function GlassWebGL({ glass }: { glass: Glass }) {
   const theSpot = React.useRef<HTMLDivElement>(null);
@@ -116,6 +116,7 @@ export default function GlassWebGL({ glass }: { glass: Glass }) {
         hdrEquirect.mapping = THREE.EquirectangularReflectionMapping;
 
         const [renderer, scene, camera] = init();
+
         renderer.render(scene, camera);
       });
 
@@ -172,54 +173,61 @@ export default function GlassWebGL({ glass }: { glass: Glass }) {
         transparent: true,
       });
 
-      const drinkGeometry = new THREE.CylinderGeometry(18, 18, 15);
-
       const glassMesh = new THREE.Mesh(glassGeometry, material);
       glassMesh.position.copy(new THREE.Vector3(18, 0, 0));
 
-      const drinkMaterial = new THREE.MeshPhysicalMaterial({
-        color: 0x663a15,
-        metalness: params.metalness,
-        roughness: params.roughness,
-        ior: params.ior,
-        // alphaMap: texture,
-        envMap: hdrEquirect,
-        envMapIntensity: params.envMapIntensity,
-        transmission: params.transmission, // use material.transmission for glass materials
-        specularIntensity: params.specularIntensity,
-        specularColor: new THREE.Color(0xffffff),
-        opacity: params.opacity,
-        side: THREE.DoubleSide,
-        transparent: true,
-      });
+      const drinkMeshes = glass.contents.map((ingredient) => {
+        const size =
+          typeof ingredient.quantity === "number"
+            ? 2
+            : ingredient.quantity.hasValue * 20;
+        const drinkGeometry = new THREE.CylinderGeometry(18, 18, size);
 
-      const drink = new THREE.Mesh(drinkGeometry, drinkMaterial);
-      drink.position.copy(new THREE.Vector3(0, -15, 0));
+        const drinkMaterial = new THREE.MeshPhysicalMaterial({
+          color: 0x663a15,
+          metalness: params.metalness,
+          roughness: params.roughness,
+          ior: params.ior,
+          // alphaMap: texture,
+          envMap: hdrEquirect,
+          envMapIntensity: params.envMapIntensity,
+          transmission: params.transmission, // use material.transmission for glass materials
+          specularIntensity: params.specularIntensity,
+          specularColor: new THREE.Color(0xffffff),
+          opacity: params.opacity,
+          side: THREE.DoubleSide,
+          transparent: true,
+        });
+
+        const drink = new THREE.Mesh(drinkGeometry, drinkMaterial);
+        drink.position.copy(new THREE.Vector3(0, -15, 0));
+        return drink;
+      });
       // drink.quaternion.copy(quaternion);
       // drink.rotation.x = 0.5;
 
-      const drinkMaterial2 = new THREE.MeshPhysicalMaterial({
-        color: 0xdabe37,
-        metalness: params.metalness,
-        roughness: params.roughness,
-        ior: params.ior,
-        // alphaMap: texture,
-        envMap: hdrEquirect,
-        envMapIntensity: params.envMapIntensity,
-        transmission: params.transmission, // use material.transmission for glass materials
-        specularIntensity: params.specularIntensity,
-        specularColor: new THREE.Color(0xffffff),
-        opacity: params.opacity,
-        side: THREE.DoubleSide,
-        transparent: true,
-      });
+      // const drinkMaterial2 = new THREE.MeshPhysicalMaterial({
+      //   color: 0xdabe37,
+      //   metalness: params.metalness,
+      //   roughness: params.roughness,
+      //   ior: params.ior,
+      //   // alphaMap: texture,
+      //   envMap: hdrEquirect,
+      //   envMapIntensity: params.envMapIntensity,
+      //   transmission: params.transmission, // use material.transmission for glass materials
+      //   specularIntensity: params.specularIntensity,
+      //   specularColor: new THREE.Color(0xffffff),
+      //   opacity: params.opacity,
+      //   side: THREE.DoubleSide,
+      //   transparent: true,
+      // });
 
-      const drink2 = new THREE.Mesh(drinkGeometry, drinkMaterial2);
+      // const drink2 = new THREE.Mesh(drinkGeometry, drinkMaterial2);
       // drink2.position.copy(new THREE.Vector3(0, 0, 0));
       // drink2.quaternion.copy(quaternion);
       // drink2.rotation.x = 0.5;
 
-      scene.add(glassMesh, drink, drink2);
+      scene.add(...drinkMeshes);
 
       return [renderer, scene, camera];
     };
