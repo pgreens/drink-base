@@ -7,6 +7,7 @@ import {
 
 export interface Food extends JsonLdObject {
   "http://rdfs.co/bevon/name"?: JsonLdString;
+  "http://kb.liquorpicker.com/color"?: JsonLdString;
 }
 
 export function displayNameForFood(o: Food, lang: string): string {

@@ -7,8 +7,14 @@
 @prefix bevon: <http://rdfs.co/bevon/> .
 @prefix food: <http://data.lirmm.fr/ontologies/food#> .
 @prefix gr: <http://purl.org/goodrelations/v1#> .
+@prefix dbpedia: <http://dbpedia.org/ontology/> .
 
 ## Classes
+
+:Mixin a owl:Class ;
+  rdfs:subClassOf food:Food ;
+  skos:prefLabel "Mixin"@en ;
+  skos:definition "Any component of a mixed drink"@en .
 
 :Bitters a owl:Class ;
   rdfs:subClassOf bevon:FermentedBeverage ;
@@ -27,6 +33,14 @@
   skos:definition "TBD" ;
   rdfs:seeAlso <https://en.wikipedia.org/wiki/Cura%C3%A7ao_(liqueur)> .
 
+## Properties
+
+:color a owl:DatatypeProperty ;
+  rdfs:domain :Mixin ;
+  rdfs:range dbpedia:Colour ;
+  skos:prefLabel "color"@en , "색상"@ko ;
+  skos:sameAs bevon:color .
+
 ## Individuals
 
 
@@ -34,35 +48,41 @@
 
 ### Liquor ###
 
-:Bourbon a bevon:BourbonWhiskey ;
-  bevon:name "Bourbon"@en .
+:Bourbon a bevon:BourbonWhiskey, :Mixin ;
+  bevon:name "Bourbon"@en ;
+  :color "8c4707" .
 
-:AngosturaBitters a :AromaticBitters ;
+:AngosturaBitters a :AromaticBitters, :Mixin ;
   bevon:name "Angostura Bitters"@en ;
-  rdfs:seeAlso <https://en.wikipedia.org/wiki/Angostura_bitters> .
+  rdfs:seeAlso <https://en.wikipedia.org/wiki/Angostura_bitters> ;
+  :color "771414" .
 
-:Cognac a bevon:Cognac ;
-  bevon:name "Cognac"@en .
+:Cognac a bevon:Cognac, :Mixin ;
+  bevon:name "Cognac"@en ;
+  :color "915318" .
 
-:DryCuraçao a :Curaçao ;
+:DryCuraçao a :Curaçao, :Mixin ;
   bevon:name "Dry Curaçao"@en ;
-  rdfs:seeAlso <https://en.wikipedia.org/wiki/Cura%C3%A7ao_(liqueur)> .
+  rdfs:seeAlso <https://en.wikipedia.org/wiki/Cura%C3%A7ao_(liqueur)> ;
+  :color "f97b04" .
 
 ### Syrup ###
 
-:SimpleSyrup a food:food ;
-  bevon:name "Simple syrup"@en .
+:SimpleSyrup a :Mixin ;
+  bevon:name "Simple syrup"@en ;
+  :color "f4f4f4" .
 
 ### Fruit ###
 
-:LemonTwist a food:food ;
+:LemonTwist a :Mixin ;
   bevon:name "Lemon twist"@en .
 
-:OrangeTwist a food:food ;
+:OrangeTwist a :Mixin ;
   bevon:name "Orange twist"@en .
 
-:FreshLemonJuice a food:food ;
-  bevon:name "Fresh lemon juice"@en .
+:FreshLemonJuice a :Mixin ;
+  bevon:name "Fresh lemon juice"@en ;
+  :color "fcf350" .
 
 ## Cocktails ##
 

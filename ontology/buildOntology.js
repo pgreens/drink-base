@@ -59,16 +59,12 @@ var fs_1 = require("fs");
 var stream = require("stream");
 var n3_1 = require("n3");
 var jsonld = require("jsonld");
-// const rdf = readFileSync("./ontology/cocktail.rdf").toString("utf-8");
-// jsonld
-//   .fromRDF(rdf as any, { format: "application/n-quads" })
-//   .then((json) => console.log(json));
-var out = (0, fs_1.createWriteStream)("./ontology/ontology.rdf");
 var parser = new n3_1.StreamParser();
 var writer = new n3_1.StreamWriter({
     format: "N-Triples"
 });
 parser.pipe(writer);
+// const out = createWriteStream("./ontology/ontology.rdf");
 // writer.pipe(out);
 var cocktails = (0, fs_1.createReadStream)("./ontology/cocktail.ttl");
 var bevon = (0, fs_1.createReadStream)("./ref/bevon.ttl");
@@ -82,18 +78,19 @@ streamToString(writer).then(function (rdf) {
         return (0, fs_1.writeFileSync)("./ontology/ontology.json", JSON.stringify(json));
     });
 });
-function concatStreams(readables) {
+// adapted from StackOverflow
+function concatStreams(readStreams) {
     return __asyncGenerator(this, arguments, function concatStreams_1() {
-        var _i, readables_1, readable, _a, readable_1, readable_1_1, chunk, e_1_1;
+        var _i, readStreams_1, readable, _a, readable_1, readable_1_1, chunk, e_1_1;
         var _b, e_1, _c, _d;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
-                    _i = 0, readables_1 = readables;
+                    _i = 0, readStreams_1 = readStreams;
                     _e.label = 1;
                 case 1:
-                    if (!(_i < readables_1.length)) return [3 /*break*/, 18];
-                    readable = readables_1[_i];
+                    if (!(_i < readStreams_1.length)) return [3 /*break*/, 18];
+                    readable = readStreams_1[_i];
                     _e.label = 2;
                 case 2:
                     _e.trys.push([2, 11, 12, 17]);
@@ -142,6 +139,7 @@ function concatStreams(readables) {
         });
     });
 }
+// adapted from StackOverflow
 function streamToString(stream) {
     var _a, stream_1, stream_1_1;
     var _b, e_2, _c, _d;

@@ -5,9 +5,7 @@ export function isA(
   owlClassId: string,
   doc: JsonLdObject[]
 ): boolean {
-  console.log(`is ${thing["@id"]} a ${owlClassId}?`, thing);
   if (!thing["@type"]) {
-    console.log("no type", thing);
     return false;
   }
   if (thing["@id"] === owlClassId || thing["@type"].includes(owlClassId)) {
@@ -26,9 +24,7 @@ export function isA(
   // if (!thingDef) {
   //   throw new Error(`${thing["@id"]} not found in linked-data doc`);
   // }
-  // console.log(thingDef);
   if (!thing["http://www.w3.org/2000/01/rdf-schema#subClassOf"]) {
-    console.log("no subclass definition");
     return false;
   }
   const superTypes = doc.filter(
@@ -39,6 +35,5 @@ export function isA(
       )
   );
   const found = superTypes.find((superT) => isA(superT, owlClassId, doc));
-  console.log(found ? "yes!" : "no");
   return found !== undefined;
 }

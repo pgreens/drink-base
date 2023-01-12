@@ -30,6 +30,23 @@ export function addIngredient(glass: Glass, ingredient: Ingredient): Glass {
   };
 }
 
+export function totalQuantity(glass: Glass): QuantitativeValue {
+  return glass.contents
+    .filter((ingredient) => typeof ingredient.quantity !== "number")
+    .reduce(
+      (total, ingredient) => {
+        if (typeof ingredient.quantity !== "number") {
+          return add(ingredient.quantity, total);
+        }
+        return total;
+      },
+      {
+        hasUnitOfMeasurement: "OZA",
+        hasValue: 0,
+      } as QuantitativeValue
+    );
+}
+
 export function displayQuantity(quantity: number | QuantitativeValue): string {
   if (typeof quantity === "number") {
     return String(quantity);

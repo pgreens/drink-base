@@ -26,24 +26,26 @@ export function displayNameFor(o: JsonLdObject, lang: string): string {
   return "unknown";
 }
 
-export function stringFrom(jsonLdString: JsonLdString, lang: string): string {
+export function stringFrom(jsonLdString: JsonLdString, lang?: string): string {
   if (!jsonLdString) {
     return "";
   }
-  if (typeof jsonLdString === "string") {
-    return jsonLdString;
-  }
-  const preferredLang = jsonLdString.find(
-    (localStr) => localStr["@language"] === lang
-  );
-  if (preferredLang) {
-    return preferredLang["@value"];
-  }
-  const english = jsonLdString.find(
-    (localStr) => localStr["@language"] === "en"
-  );
-  if (english) {
-    return english["@value"];
+  if (lang) {
+    if (typeof jsonLdString === "string") {
+      return jsonLdString;
+    }
+    const preferredLang = jsonLdString.find(
+      (localStr) => localStr["@language"] === lang
+    );
+    if (preferredLang) {
+      return preferredLang["@value"];
+    }
+    const english = jsonLdString.find(
+      (localStr) => localStr["@language"] === "en"
+    );
+    if (english) {
+      return english["@value"];
+    }
   }
   // any lang
   return jsonLdString[0]["@value"];
