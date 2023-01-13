@@ -7,12 +7,13 @@ import { defaultIngredients } from "./ingredients";
 import GlassText from "./components/GlassText";
 // import GlassWebGL from "./components/GlassWebGL";
 import Glass3D from "./components/Glass3D";
-import { isA } from "./jsonld/types";
+import { isAnIndiviaulOfType } from "./jsonld/types";
 import { Food } from "./jsonld/food";
 
 const foods = ontology.filter((thing) =>
-  isA(thing, "http://kb.liquorpicker.com/Mixin", ontology)
+  isAnIndiviaulOfType(thing, "http://kb.liquorpicker.com/Mixin", ontology)
 );
+console.log("food", foods);
 const ingredients = defaultIngredients(foods as Food[]);
 
 export function App(): JSX.Element {

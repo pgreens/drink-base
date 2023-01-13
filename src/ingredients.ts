@@ -2,7 +2,7 @@ import { displayQuantity } from "./glass";
 import { displayNameForFood, Food } from "./jsonld/food";
 import { isA } from "./jsonld/types";
 import { QuantitativeValue } from "./quantity";
-import * as full from '../ontology/ontology.json';
+import * as full from "../ontology/ontology.json";
 
 export interface Ingredient {
   readonly food: Food;
@@ -20,7 +20,7 @@ export function defaultIngredients(food: Food[]): Ingredient[] {
         },
       };
     }
-    if (isA(f, "http://rdfs.co/bevon/Beverage", full)) {
+    if (isA(f, "http://kb.liquorpicker.com/LiquidMixin", full)) {
       return {
         food: f,
         quantity: {

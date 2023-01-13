@@ -37,3 +37,18 @@ export function isA(
   const found = superTypes.find((superT) => isA(superT, owlClassId, doc));
   return found !== undefined;
 }
+
+export function isAnIndiviaulOfType(
+  thing: JsonLdObject,
+  owlClassId: string,
+  doc: JsonLdObject[]
+): boolean {
+  if (!thing["@type"]) {
+    return false;
+  }
+
+  return (
+    !thing["@type"].includes("http://www.w3.org/2002/07/owl#Class") &&
+    isA(thing, owlClassId, doc)
+  );
+}

@@ -11,10 +11,16 @@
 
 ## Classes
 
+
 :Mixin a owl:Class ;
   rdfs:subClassOf food:Food ;
   skos:prefLabel "Mixin"@en ;
   skos:definition "Any component of a mixed drink"@en .
+
+:LiquidMixin a owl:Class ;
+  rdfs:subClassOf :Mixin ;
+  skos:prefLabel "Liquid mixin"@en ;
+  skos:definition "Any liquid component of a mixed drink"@en .
 
 :Bitters a owl:Class ;
   rdfs:subClassOf bevon:FermentedBeverage ;
@@ -48,27 +54,27 @@
 
 ### Liquor ###
 
-:Bourbon a bevon:BourbonWhiskey, :Mixin ;
+:Bourbon a bevon:BourbonWhiskey, :LiquidMixin ;
   bevon:name "Bourbon"@en ;
   :color "8c4707" .
 
-:AngosturaBitters a :AromaticBitters, :Mixin ;
+:AngosturaBitters a :AromaticBitters, :LiquidMixin ;
   bevon:name "Angostura Bitters"@en ;
   rdfs:seeAlso <https://en.wikipedia.org/wiki/Angostura_bitters> ;
   :color "771414" .
 
-:Cognac a bevon:Cognac, :Mixin ;
+:Cognac a bevon:Cognac, :LiquidMixin ;
   bevon:name "Cognac"@en ;
   :color "915318" .
 
-:DryCuraçao a :Curaçao, :Mixin ;
+:DryCuraçao a :Curaçao, :LiquidMixin ;
   bevon:name "Dry Curaçao"@en ;
   rdfs:seeAlso <https://en.wikipedia.org/wiki/Cura%C3%A7ao_(liqueur)> ;
   :color "f97b04" .
 
 ### Syrup ###
 
-:SimpleSyrup a :Mixin ;
+:SimpleSyrup a :LiquidMixin ;
   bevon:name "Simple syrup"@en ;
   :color "f4f4f4" .
 
@@ -80,7 +86,7 @@
 :OrangeTwist a :Mixin ;
   bevon:name "Orange twist"@en .
 
-:FreshLemonJuice a :Mixin ;
+:FreshLemonJuice a bevon:Beverage, :LiquidMixin ;
   bevon:name "Fresh lemon juice"@en ;
   :color "fcf350" .
 
