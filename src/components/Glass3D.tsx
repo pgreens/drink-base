@@ -3,9 +3,11 @@ import { Glass, totalQuantity } from "../glass";
 import * as THREE from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { Canvas, ThreeElements, useFrame, useLoader } from "@react-three/fiber";
-import { Ingredient } from "../ingredients";
+import { displayNameForIngredient, Ingredient } from "../ingredients";
 import { stringFrom } from "../jsonld/jsonld";
 import { QuantitativeValue } from "../quantity";
+import { CanvasTexture } from "three";
+import { Text } from "@react-three/drei";
 
 export default function Glass3D({ glass }: { glass: Glass }) {
   const quaternion = new THREE.Quaternion();
@@ -15,18 +17,22 @@ export default function Glass3D({ glass }: { glass: Glass }) {
     (ingredient) => typeof ingredient.quantity !== "number"
   );
 
-  const positions = liquids.reduce(
-    (positions, ingredient) => {
-      const [lastTop, _lastMid] = positions[positions.length - 1];
-      const height = (ingredient.quantity as QuantitativeValue).hasValue * 10;
-      return [
-        ...positions,
-        // filtered out the other types already
-        [lastTop + height, lastTop + height / 2],
-      ];
-    },
-    [[-40, 0]]
-  );
+  const positions = liquids
+    .reduce(
+      (positions, ingredient) => {
+        const [lastTop, _lastMid] = positions[positions.length - 1];
+        const height = (ingredient.quantity as QuantitativeValue).hasValue * 10;
+        return [
+          ...positions,
+          // filtered out the other types already
+          [lastTop + height, lastTop + height / 2],
+        ];
+      },
+      [[-40, 0]]
+    )
+    // drop first entry, which was an initial value to make the reduction easier
+    .slice(1);
+  if (positions.length === 0) positions.push([0, 0]);
 
   return (
     <div style={{ height: 500 }}>
@@ -39,8 +45,21 @@ export default function Glass3D({ glass }: { glass: Glass }) {
           <LiquidIngredient3D
             key={i}
             ingredient={ingredient}
-            meshProps={{ position: [0, positions[i + 1][1], 0] }}
+            meshProps={{ position: [0, positions[i][1], 0] }}
           />
+        ))}
+        {liquids.map((ingredient, i) => (
+          <React.Fragment key={`desc-${i}`}>
+            <mesh position={[90, positions[i][0], 10]}>
+              <planeGeometry args={[100, 0.5]} />
+              <meshBasicMaterial color={0xffffff} />
+            </mesh>
+            <mesh position={[140, positions[i][0]-1, 10]}>
+              <Text color={0xffffff} anchorX="right" anchorY="top" fontSize={5}>
+                {displayNameForIngredient(ingredient, "en")}
+              </Text>
+            </mesh>
+          </React.Fragment>
         ))}
       </Canvas>
     </div>
