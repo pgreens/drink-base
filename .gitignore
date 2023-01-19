@@ -131,3 +131,6 @@ dist
 
 # notes and misc
 ref/
+
+# Mac
+.DS_Store

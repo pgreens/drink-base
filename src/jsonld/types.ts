@@ -1,7 +1,8 @@
+import { OwlClass } from "../../ontology/types";
 import { JsonLdObject } from "./jsonld";
 
 export function isA(
-  thing: JsonLdObject,
+  thing: OwlClass, // not quite right
   owlClassId: string,
   doc: JsonLdObject[]
 ): boolean {
@@ -38,7 +39,7 @@ export function isA(
   return found !== undefined;
 }
 
-export function isAnIndiviaulOfType(
+export function isAnIndividualOfType(
   thing: JsonLdObject,
   owlClassId: string,
   doc: JsonLdObject[]

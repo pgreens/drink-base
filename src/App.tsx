@@ -1,17 +1,18 @@
 import React from "react";
 import Ingredients from "./components/Ingredients";
 import { addIngredient, Glass } from "./glass";
-// import * as foods from "./food.json";
 import * as ontology from "../ontology/ontology.json";
 import { defaultIngredients } from "./ingredients";
 import GlassText from "./components/GlassText";
 // import GlassWebGL from "./components/GlassWebGL";
 import Glass3D from "./components/Glass3D";
-import { isAnIndiviaulOfType } from "./jsonld/types";
-import { Food } from "./jsonld/food";
+import { isAnIndividualOfType } from "./jsonld/types";
+// import { Food } from "./jsonld/food";
+import { match } from "./engine/engine";
+import { Food } from "../ontology/types";
 
 const foods = ontology.filter((thing) =>
-  isAnIndiviaulOfType(thing, "http://kb.liquorpicker.com/Mixin", ontology)
+  isAnIndividualOfType(thing, "http://kb.liquorpicker.com/Mixin", ontology)
 );
 console.log("food", foods);
 const ingredients = defaultIngredients(foods as Food[]);
@@ -20,6 +21,11 @@ export function App(): JSX.Element {
   const [glass, setGlass] = React.useState({
     contents: [],
   } as Glass);
+
+  const onMix = () => {
+    const m = match(glass, ontology);
+    console.log("match", m);
+  };
 
   return (
     <>
@@ -33,6 +39,7 @@ export function App(): JSX.Element {
       {/* <GlassWebGL glass={glass} /> */}
       <Glass3D glass={glass} />
       <GlassText glass={glass} />
+      <button onClick={onMix}>MIX</button>
     </>
   );
 }

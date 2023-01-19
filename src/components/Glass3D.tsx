@@ -3,25 +3,33 @@ import { Glass, totalQuantity } from "../glass";
 import * as THREE from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { Canvas, ThreeElements, useFrame, useLoader } from "@react-three/fiber";
-import { displayNameForIngredient, Ingredient } from "../ingredients";
+import { displayNameForIngredient } from "../ingredients";
 import { stringFrom } from "../jsonld/jsonld";
-import { QuantitativeValue } from "../quantity";
 import { CanvasTexture } from "three";
 import { Text } from "@react-three/drei";
+import {
+  AppIngredient,
+  AppQuantitativeValue,
+} from "../../ontology/constraints";
+import { Mixin } from "../../ontology/types";
 
 export default function Glass3D({ glass }: { glass: Glass }) {
   const quaternion = new THREE.Quaternion();
   quaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 10);
 
   const liquids = glass.contents.filter(
-    (ingredient) => typeof ingredient.quantity !== "number"
+    (ingredient) =>
+      typeof ingredient["http://rdfs.co/bevon/quantity"] !== "number"
   );
 
   const positions = liquids
     .reduce(
       (positions, ingredient) => {
         const [lastTop, _lastMid] = positions[positions.length - 1];
-        const height = (ingredient.quantity as QuantitativeValue).hasValue * 10;
+        const height =
+          (ingredient["http://rdfs.co/bevon/quantity"] as AppQuantitativeValue)[
+            "http://purl.org/goodrelations/v1#hasValue"
+          ] * 10;
         return [
           ...positions,
           // filtered out the other types already
@@ -54,7 +62,7 @@ export default function Glass3D({ glass }: { glass: Glass }) {
               <planeGeometry args={[100, 0.5]} />
               <meshBasicMaterial color={0xffffff} />
             </mesh>
-            <mesh position={[140, positions[i][0]-1, 10]}>
+            <mesh position={[140, positions[i][0] - 1, 10]}>
               <Text color={0xffffff} anchorX="right" anchorY="top" fontSize={5}>
                 {displayNameForIngredient(ingredient, "en")}
               </Text>
@@ -70,20 +78,30 @@ function LiquidIngredient3D({
   ingredient,
   meshProps,
 }: {
-  ingredient: Ingredient;
+  ingredient: AppIngredient;
   meshProps: ThreeElements["mesh"];
 }) {
   const ref = React.useRef<THREE.Mesh>(null!);
   const texture = useLoader(RGBELoader, "./royal_esplanade_1k.hdr");
   texture.mapping = THREE.EquirectangularReflectionMapping;
 
-  if (typeof ingredient.quantity === "number") {
+  if (typeof ingredient["http://rdfs.co/bevon/quantity"] === "number") {
     throw new Error("invalid liquid quantity");
   }
 
-  const height = ingredient.quantity.hasValue * 10;
-  const color = ingredient.food["http://kb.liquorpicker.com/color"]
-    ? stringFrom(ingredient.food["http://kb.liquorpicker.com/color"])
+  const height =
+    ingredient["http://rdfs.co/bevon/quantity"][
+      "http://purl.org/goodrelations/v1#hasValue"
+    ] * 10;
+  const colorVal = ingredient["http://rdfs.co/bevon/food"]
+  const color = ingredient["http://rdfs.co/bevon/food"][
+    "http://kb.liquorpicker.com/color"
+  ]
+    ? stringFrom(
+        ingredient["http://rdfs.co/bevon/food"][
+          "http://kb.liquorpicker.com/color"
+        ]
+      )
     : "ffffff";
 
   return (

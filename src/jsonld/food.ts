@@ -1,3 +1,4 @@
+import { Food } from "../../ontology/types";
 import {
   displayNameFor,
   JsonLdObject,
@@ -5,10 +6,10 @@ import {
   stringFrom,
 } from "./jsonld";
 
-export interface Food extends JsonLdObject {
-  "http://rdfs.co/bevon/name"?: JsonLdString;
-  "http://kb.liquorpicker.com/color"?: JsonLdString;
-}
+// export interface Food extends JsonLdObject {
+//   "http://rdfs.co/bevon/name"?: JsonLdString;
+//   "http://kb.liquorpicker.com/color"?: JsonLdString;
+// }
 
 export function displayNameForFood(o: Food, lang: string): string {
   if (o["http://rdfs.co/bevon/name"]) {
