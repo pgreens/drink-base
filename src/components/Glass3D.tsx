@@ -5,13 +5,16 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { Canvas, ThreeElements, useFrame, useLoader } from "@react-three/fiber";
 import { displayNameForIngredient } from "../ingredients";
 import { stringFrom } from "../jsonld/jsonld";
-import { CanvasTexture } from "three";
+import { CanvasTexture, CatmullRomCurve3 } from "three";
 import { Text } from "@react-three/drei";
 import {
   AppIngredient,
   AppQuantitativeValue,
 } from "../../ontology/constraints";
 import { Mixin } from "../../ontology/types";
+import { convert } from "../quantity";
+
+const MIN_LINE_HEIGHT = 7;
 
 export default function Glass3D({ glass }: { glass: Glass }) {
   const quaternion = new THREE.Quaternion();
@@ -27,9 +30,10 @@ export default function Glass3D({ glass }: { glass: Glass }) {
       (positions, ingredient) => {
         const [lastTop, _lastMid] = positions[positions.length - 1];
         const height =
-          (ingredient["http://rdfs.co/bevon/quantity"] as AppQuantitativeValue)[
-            "http://purl.org/goodrelations/v1#hasValue"
-          ] * 10;
+          convert(
+            ingredient["http://rdfs.co/bevon/quantity"] as AppQuantitativeValue,
+            "MLT"
+          )["http://purl.org/goodrelations/v1#hasValue"] / 4;
         return [
           ...positions,
           // filtered out the other types already
@@ -41,6 +45,14 @@ export default function Glass3D({ glass }: { glass: Glass }) {
     // drop first entry, which was an initial value to make the reduction easier
     .slice(1);
   if (positions.length === 0) positions.push([0, 0]);
+
+  const textPositions = positions.reduce((txtPoss, [top, _mid], i) => {
+    const lastTxt = i > 0 ? txtPoss[txtPoss.length - 1] : -40 - MIN_LINE_HEIGHT;
+    if (top - lastTxt < MIN_LINE_HEIGHT) {
+      return [...txtPoss, lastTxt + MIN_LINE_HEIGHT];
+    }
+    return [...txtPoss, top];
+  }, []);
 
   return (
     <div style={{ height: 500 }}>
@@ -58,11 +70,62 @@ export default function Glass3D({ glass }: { glass: Glass }) {
         ))}
         {liquids.map((ingredient, i) => (
           <React.Fragment key={`desc-${i}`}>
-            <mesh position={[90, positions[i][0], 10]}>
+            {/* <mesh position={[90, textPositions[i], 10]}>
               <planeGeometry args={[100, 0.5]} />
               <meshBasicMaterial color={0xffffff} />
-            </mesh>
-            <mesh position={[140, positions[i][0] - 1, 10]}>
+            </mesh> */}
+            <line>
+              {/* <bufferGeometry> */}
+              {/* <bufferAttribute
+                  attach="attributes-position"
+                  args={[
+                    new Float32Array([
+                      40,
+                      textPositions[i] - 1,
+                      10,
+                      140,
+                      textPositions[i] - 1,
+                      10,
+                    ]),
+                    3,
+                  ]}
+                />
+              </bufferGeometry> */}
+              <tubeGeometry
+                args={[
+                  new THREE.LineCurve3(
+                    new THREE.Vector3(40, positions[i][0], 10),
+                    new THREE.Vector3(80, textPositions[i], 10)
+                  ),
+                  // new THREE.CatmullRomCurve3([
+                  //   new THREE.Vector3(40, positions[i][0] - 1, 10),
+                  //   new THREE.Vector3(100, textPositions[i] - 1, 10),
+                  //   new THREE.Vector3(140, textPositions[i] - 1, 10),
+                  // ]),
+                  1,
+                  0.1,
+                  8,
+                  false,
+                ]}
+              />
+              <lineBasicMaterial color={0xffffff} />
+            </line>
+            <line>
+              <tubeGeometry
+                args={[
+                  new THREE.LineCurve3(
+                    new THREE.Vector3(80, textPositions[i], 10),
+                    new THREE.Vector3(140, textPositions[i], 10)
+                  ),
+                  1,
+                  0.1,
+                  8,
+                  false,
+                ]}
+              />
+              <lineBasicMaterial color={0xffffff} />
+            </line>
+            <mesh position={[140, textPositions[i] - 1, 10]}>
               <Text color={0xffffff} anchorX="right" anchorY="top" fontSize={5}>
                 {displayNameForIngredient(ingredient, "en")}
               </Text>
@@ -90,10 +153,12 @@ function LiquidIngredient3D({
   }
 
   const height =
-    ingredient["http://rdfs.co/bevon/quantity"][
+    convert(ingredient["http://rdfs.co/bevon/quantity"], "MLT")[
       "http://purl.org/goodrelations/v1#hasValue"
-    ] * 10;
-  const colorVal = ingredient["http://rdfs.co/bevon/food"]
+    ] / 4;
+  // ingredient["http://rdfs.co/bevon/quantity"][
+  //   "http://purl.org/goodrelations/v1#hasValue"
+  // ] * 10;
   const color = ingredient["http://rdfs.co/bevon/food"][
     "http://kb.liquorpicker.com/color"
   ]
