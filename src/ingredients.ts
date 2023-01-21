@@ -27,6 +27,15 @@ export function defaultIngredients(food: Food[]): AppIngredient[] {
         }, //as QuantitativeValue,
       };
     }
+    if (isA(f, "http://kb.liquorpicker.com/Syrup", full)) {
+      return {
+        "http://rdfs.co/bevon/food": consF,
+        "http://rdfs.co/bevon/quantity": {
+          "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": "G25",
+          "http://purl.org/goodrelations/v1#hasValue": 1,
+        },
+      };
+    }
     if (isA(f, "http://kb.liquorpicker.com/LiquidMixin", full)) {
       return {
         "http://rdfs.co/bevon/food": consF,

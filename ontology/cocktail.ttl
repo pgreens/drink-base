@@ -44,6 +44,14 @@
   skos:definition "TBD" ;
   rdfs:seeAlso <https://en.wikipedia.org/wiki/Cura%C3%A7ao_(liqueur)> .
 
+:Sweetener a owl:Class ;
+  rdfs:subClassOf food:Food ;
+  rdfs:label "Sweetener"@en .
+
+:Syrup a owl:Class ;
+  rdfs:subClassOf :Sweetener ;
+  rdfs:label "Syrup"@en .
+
 ## Properties
 
 :color a owl:DatatypeProperty ;
@@ -83,7 +91,7 @@
 
 ### Syrup ###
 
-:SimpleSyrup a :LiquidMixin ;
+:SimpleSyrup a :Syrup, :LiquidMixin ;
   bevon:name "Simple syrup"@en ;
   rdfs:label "Simple syrup"@en ;
   :color "f4f4f4" .
