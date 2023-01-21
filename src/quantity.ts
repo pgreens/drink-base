@@ -1,10 +1,4 @@
-// export interface QuantitativeValue {
-//   readonly "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": string;
-//   readonly "http://purl.org/goodrelations/v1#hasValue": number;
-// }
-
 import { AppQuantitativeValue } from "../ontology/constraints";
-import { QuantitativeValue } from "../ontology/types";
 
 export function add(
   qv1: AppQuantitativeValue,
@@ -51,39 +45,6 @@ function unitName(unitCode: string): string {
       return unitCode;
   }
 }
-
-// export function convert(
-//   quantity: QuantitativeValue,
-//   toUnit: string
-// ): QuantitativeValue {
-//   if (
-//     quantity["http://purl.org/goodrelations/v1#hasUnitOfMeasurement"] === toUnit
-//   ) {
-//     return quantity;
-//   }
-//   const conversion = conversions.filter(
-//     (c) =>
-//       c.fromUnitOfMeasurement ===
-//         quantity["http://purl.org/goodrelations/v1#hasUnitOfMeasurement"] &&
-//       c.toUnitOfMeasurement === toUnit
-//   );
-
-//   if (conversion.length === 0) {
-//     throw new Error(
-//       `Unsupported conversion: ${quantity["http://purl.org/goodrelations/v1#hasUnitOfMeasurement"]} to ${toUnit}`
-//     );
-//   }
-
-//   return {
-//     "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": toUnit,
-//     "http://purl.org/goodrelations/v1#hasValue": toNumber(
-//       mult(
-//         fraction(quantity["http://purl.org/goodrelations/v1#hasValue"], 1),
-//         conversion[0].factor
-//       )
-//     ),
-//   };
-// }
 
 export function convert(
   quantity: AppQuantitativeValue,

@@ -10,11 +10,6 @@ import {
 } from "../ontology/constraints";
 import { Food, QuantitativeValue } from "../ontology/types";
 
-// export interface Ingredient {
-//   readonly "http://rdfs.co/bevon/food": Food;
-//   readonly "http://rdfs.co/bevon/quantity": number | QuantitativeValue;
-// }
-
 export function defaultIngredients(food: Food[]): AppIngredient[] {
   return food.map((f) => {
     const consF = constrainIngredientFood(f);

@@ -20,11 +20,6 @@ export function isA(
     return found !== undefined;
   }
 
-  // look superclasses for classes
-  // const thingDef = doc.find((o) => o["@id"] === thing["@id"]);
-  // if (!thingDef) {
-  //   throw new Error(`${thing["@id"]} not found in linked-data doc`);
-  // }
   if (!thing["http://www.w3.org/2000/01/rdf-schema#subClassOf"]) {
     return false;
   }

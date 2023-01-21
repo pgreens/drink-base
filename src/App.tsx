@@ -12,7 +12,6 @@ import { Food } from "../ontology/types";
 const foods = ontology.filter((thing) =>
   isAnIndividualOfType(thing, "http://kb.liquorpicker.com/Mixin", ontology)
 );
-console.log("food", foods);
 const ingredients = defaultIngredients(foods as Food[]);
 
 export function App(): JSX.Element {
