@@ -1,17 +1,15 @@
 import React from "react";
-import { Glass, totalQuantity } from "../glass";
+import { Glass } from "../glass";
 import * as THREE from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { Canvas, ThreeElements, useFrame, useLoader } from "@react-three/fiber";
 import { displayNameForIngredient } from "../ingredients";
 import { stringFrom } from "../jsonld/jsonld";
-import { CanvasTexture, CatmullRomCurve3 } from "three";
 import { Text } from "@react-three/drei";
 import {
   AppIngredient,
   AppQuantitativeValue,
 } from "../../ontology/constraints";
-import { Mixin } from "../../ontology/types";
 import { convert } from "../quantity";
 
 const MIN_LINE_HEIGHT = 7;
@@ -70,38 +68,15 @@ export default function Glass3D({ glass }: { glass: Glass }) {
         ))}
         {liquids.map((ingredient, i) => (
           <React.Fragment key={`desc-${i}`}>
-            {/* <mesh position={[90, textPositions[i], 10]}>
-              <planeGeometry args={[100, 0.5]} />
-              <meshBasicMaterial color={0xffffff} />
-            </mesh> */}
             <line>
-              {/* <bufferGeometry> */}
-              {/* <bufferAttribute
-                  attach="attributes-position"
-                  args={[
-                    new Float32Array([
-                      40,
-                      textPositions[i] - 1,
-                      10,
-                      140,
-                      textPositions[i] - 1,
-                      10,
-                    ]),
-                    3,
-                  ]}
-                />
-              </bufferGeometry> */}
               <tubeGeometry
                 args={[
+                  // is there a way to do this with straight JSX
+                  // so we don't recreate these every render?
                   new THREE.LineCurve3(
                     new THREE.Vector3(40, positions[i][0], 10),
-                    new THREE.Vector3(80, textPositions[i], 10)
+                    new THREE.Vector3(60, textPositions[i], 10)
                   ),
-                  // new THREE.CatmullRomCurve3([
-                  //   new THREE.Vector3(40, positions[i][0] - 1, 10),
-                  //   new THREE.Vector3(100, textPositions[i] - 1, 10),
-                  //   new THREE.Vector3(140, textPositions[i] - 1, 10),
-                  // ]),
                   1,
                   0.1,
                   8,
@@ -114,7 +89,7 @@ export default function Glass3D({ glass }: { glass: Glass }) {
               <tubeGeometry
                 args={[
                   new THREE.LineCurve3(
-                    new THREE.Vector3(80, textPositions[i], 10),
+                    new THREE.Vector3(60, textPositions[i], 10),
                     new THREE.Vector3(140, textPositions[i], 10)
                   ),
                   1,
