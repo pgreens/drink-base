@@ -4,10 +4,8 @@ import { addIngredient, Glass } from "./glass";
 import * as ontology from "../ontology/ontology.json";
 import { defaultIngredients } from "./ingredients";
 import GlassText from "./components/GlassText";
-// import GlassWebGL from "./components/GlassWebGL";
 import Glass3D from "./components/Glass3D";
 import { isAnIndividualOfType } from "./jsonld/types";
-// import { Food } from "./jsonld/food";
 import { match } from "./engine/engine";
 import { Food } from "../ontology/types";
 
@@ -36,10 +34,10 @@ export function App(): JSX.Element {
           setGlass((curr) => addIngredient(curr, ingredient))
         }
       />
-      {/* <GlassWebGL glass={glass} /> */}
       <Glass3D glass={glass} />
       <GlassText glass={glass} />
       <button onClick={onMix}>MIX</button>
+      <button onClick={() => setGlass({ contents: [] })}>Dump glass</button>
     </>
   );
 }
