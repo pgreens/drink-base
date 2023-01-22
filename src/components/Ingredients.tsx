@@ -13,10 +13,16 @@ export default function Ingredients({
   onAddIngredientHandler: OnAddIngredientEventHandler;
 }) {
   return (
-    <ul>
+    <ul className="ingredient-options-list">
       {ingredients.map((i) => (
-        <li key={i["http://rdfs.co/bevon/food"]["@id"]}>
-          <button onClick={(event) => onAddIngredientHandler(i)}>
+        <li
+          style={{ marginBottom: 5 }}
+          key={i["http://rdfs.co/bevon/food"]["@id"]}
+        >
+          <button
+            className="ingredient-button"
+            onClick={(event) => onAddIngredientHandler(i)}
+          >
             {displayNameForFood(i["http://rdfs.co/bevon/food"], "en")}
           </button>
         </li>

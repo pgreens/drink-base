@@ -1,0 +1,46 @@
+body {
+  font-family: Helvetica, Arial, sans-serif;
+}
+h1 {
+  color: #fff;
+  position: relative;
+  z-index: 10;
+  font-weight: 100;
+  font-size: 40pt;
+  margin: 0;
+}
+
+.glass {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.ingredient-options-list {
+  list-style: none;
+  position: absolute;
+  right: 50;
+  z-index: 10;
+}
+
+.ingredient-buttonA {
+  width: 100;
+  padding: 10;
+  background-color: #fff;
+  border-style: none;
+  border-radius: 3;
+  cursor: pointer;
+}
+
+.ingredient-button {
+  width: 100%;
+  padding: 10;
+  background-color: transparent;
+  color: #fff;
+  border-style: solid none;
+  cursor: pointer;
+  z-index: 10;
+}

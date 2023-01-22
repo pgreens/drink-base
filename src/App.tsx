@@ -8,6 +8,7 @@ import Glass3D from "./components/Glass3D";
 import { isAnIndividualOfType } from "./jsonld/types";
 import { match } from "./engine/engine";
 import { Food } from "../ontology/types";
+import "./App.css";
 
 const foods = ontology.filter((thing) =>
   isAnIndividualOfType(thing, "http://kb.liquorpicker.com/Mixin", ontology)
@@ -26,17 +27,19 @@ export function App(): JSX.Element {
 
   return (
     <>
-      <h1>Pick some options! 🍷🍹🍸🥂</h1>
+      <h1>cocktail</h1>
+      <Glass3D glass={glass} />
       <Ingredients
         ingredients={ingredients}
         onAddIngredientHandler={(ingredient) =>
           setGlass((curr) => addIngredient(curr, ingredient))
         }
       />
-      <Glass3D glass={glass} />
+      <div style={{}}>
+        <button onClick={() => setGlass({ contents: [] })}>Dump</button>
+        <button onClick={onMix}>Mis &gt;</button>
+      </div>
       <GlassText glass={glass} />
-      <button onClick={onMix}>MIX</button>
-      <button onClick={() => setGlass({ contents: [] })}>Dump glass</button>
     </>
   );
 }

@@ -53,9 +53,22 @@ export default function Glass3D({ glass }: { glass: Glass }) {
   }, []);
 
   return (
-    <div style={{ height: 500 }}>
+    <div className="glass">
       <Canvas
-        camera={{ position: [0, 30, 120], fov: 75, quaternion: quaternion }}
+        camera={{
+          position: [0, 30, 120],
+          fov: 75,
+          quaternion: quaternion,
+          view: {
+            enabled: true,
+            fullWidth: 100,
+            fullHeight: 100,
+            width: 100,
+            height: 100,
+            offsetX: 30,
+            offsetY: 0,
+          },
+        }}
         shadows={true}
       >
         <color attach="background" args={["#15151a"]} />
@@ -74,11 +87,11 @@ export default function Glass3D({ glass }: { glass: Glass }) {
                   // is there a way to do this with straight JSX
                   // so we don't recreate these every render?
                   new THREE.LineCurve3(
-                    new THREE.Vector3(40, positions[i][0], 10),
-                    new THREE.Vector3(60, textPositions[i], 10)
+                    new THREE.Vector3(40, positions[i][0] - 1, 10),
+                    new THREE.Vector3(60, textPositions[i] - 1, 10)
                   ),
                   1,
-                  0.1,
+                  0.05,
                   8,
                   false,
                 ]}
@@ -89,19 +102,19 @@ export default function Glass3D({ glass }: { glass: Glass }) {
               <tubeGeometry
                 args={[
                   new THREE.LineCurve3(
-                    new THREE.Vector3(60, textPositions[i], 10),
-                    new THREE.Vector3(140, textPositions[i], 10)
+                    new THREE.Vector3(60, textPositions[i] - 1, 10),
+                    new THREE.Vector3(100, textPositions[i] - 1, 10)
                   ),
                   1,
-                  0.1,
+                  0.05,
                   8,
                   false,
                 ]}
               />
               <lineBasicMaterial color={0xffffff} />
             </line>
-            <mesh position={[140, textPositions[i] - 1, 10]}>
-              <Text color={0xffffff} anchorX="right" anchorY="top" fontSize={5}>
+            <mesh position={[100, textPositions[i] - 2, 10]}>
+              <Text color={0xffffff} anchorX="right" anchorY="top" fontSize={3}>
                 {displayNameForIngredient(ingredient, "en")}
               </Text>
             </mesh>
@@ -146,7 +159,7 @@ function LiquidIngredient3D({
 
   return (
     <mesh ref={ref} scale={1} {...meshProps}>
-      <cylinderGeometry args={[40, 40, height]} />
+      <cylinderGeometry args={[40, 40, height, 64]} />
       <meshPhysicalMaterial
         color={parseInt(color, 16)}
         envMap={texture}
