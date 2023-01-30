@@ -1,5 +1,11 @@
 import { JsonLdString, LocaleString } from "../src/jsonld/jsonld";
-import { Bevon_Ingredient, Food, Mixin, QuantitativeValue } from "./types";
+import {
+  Bevon_Ingredient,
+  Cocktail,
+  Food,
+  Mixin,
+  QuantitativeValue,
+} from "./types";
 
 export interface AppQuantitativeValue extends QuantitativeValue {
   readonly "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": string;
@@ -19,6 +25,34 @@ export interface AppIngredientFood extends Food, Mixin {
     | LocaleString[];
 }
 
+export interface AppCocktail extends Cocktail {
+  "@id": string;
+  "http://www.w3.org/2000/01/rdf-schema#label":
+    | string
+    | LocaleString
+    | LocaleString[];
+  "http://rdfs.co/bevon/ingredient": AppIngredient[];
+}
+
+export function constrainCocktail(cocktail: Cocktail): AppCocktail {
+  if (!cocktail["@id"]) {
+    throw new Error("id is required for a cocktail");
+  }
+  if (!cocktail["http://www.w3.org/2000/01/rdf-schema#label"]) {
+    throw new Error("label is required for Cocktail");
+  }
+  if (!cocktail["http://rdfs.co/bevon/ingredient"]) {
+    throw new Error("ingredient is required for Cocktail");
+  }
+
+  return {
+    "@id": cocktail["@id"],
+    "http://www.w3.org/2000/01/rdf-schema#label": constrainAppLabel(cocktail),
+    "http://rdfs.co/bevon/ingredient":
+      cocktail["http://rdfs.co/bevon/ingredient"].map(constrainIngredient),
+  };
+}
+
 export function constrainIngredient(
   ingredient: Bevon_Ingredient | undefined
 ): AppIngredient {
@@ -26,7 +60,7 @@ export function constrainIngredient(
     throw new Error("Ingredient is undefined");
   }
   if (!ingredient["http://rdfs.co/bevon/food"]) {
-    throw new Error("food required");
+    throw new Error(`food required. id: ${ingredient["@id"]}`);
   }
   if (!ingredient["http://rdfs.co/bevon/quantity"]) {
     throw new Error("quantity required");
@@ -64,24 +98,26 @@ export function constrainIngredientFood(food: Food): AppIngredientFood {
     throw new Error("id is required for ingredient food");
   }
   if (!food["http://www.w3.org/2000/01/rdf-schema#label"]) {
-    throw new Error("label is required for ingredient food");
-  }
-  const label = food["http://www.w3.org/2000/01/rdf-schema#label"];
-
-  if (typeof label === "string") {
-    return {
-      ...food,
-      "@id": food["@id"],
-      "http://www.w3.org/2000/01/rdf-schema#label": label,
-    };
+    throw new Error(
+      `label is required for AppIngredientFood. id: ${food["@id"]}`
+    );
   }
 
-  if (isLocaleString(label)) {
-    return {
-      ...food,
-      "@id": food["@id"],
-      "http://www.w3.org/2000/01/rdf-schema#label": label,
-    };
+  return {
+    ...food,
+    "@id": food["@id"],
+    "http://www.w3.org/2000/01/rdf-schema#label": constrainAppLabel(food),
+  };
+}
+
+function constrainAppLabel(thing: any): string | LocaleString | LocaleString[] {
+  if (!thing["http://www.w3.org/2000/01/rdf-schema#label"]) {
+    throw new Error("label is required for ingredient thing");
+  }
+  const label = thing["http://www.w3.org/2000/01/rdf-schema#label"];
+
+  if (typeof label === "string" || isLocaleString(label)) {
+    return label;
   }
 
   if (
@@ -102,11 +138,7 @@ export function constrainIngredientFood(food: Food): AppIngredientFood {
     throw new Error(`constraint failure: ${failures(langLabel)}`);
   }
 
-  return {
-    ...food,
-    "@id": food["@id"],
-    "http://www.w3.org/2000/01/rdf-schema#label": langLabel,
-  };
+  return langLabel;
 }
 
 export function isLocaleString<T>(s: T | LocaleString): s is LocaleString {
@@ -118,10 +150,13 @@ export function constrainQuantitativeValue(
   quant: QuantitativeValue
 ): AppQuantitativeValue {
   if (!quant["http://purl.org/goodrelations/v1#hasUnitOfMeasurement"]) {
-    throw new Error("hasUnitOfMeasurement required");
+    throw new Error("hasUnitOfMeasurement required: " + JSON.stringify(quant));
   }
-  if (!quant["http://purl.org/goodrelations/v1#hasValue"]) {
-    throw new Error("hasValue required");
+  if (
+    quant["http://purl.org/goodrelations/v1#hasValue"] === undefined ||
+    quant["http://purl.org/goodrelations/v1#hasValue"] === null
+  ) {
+    throw new Error(`hasValue required ${JSON.stringify(quant)}`);
   }
   const unit = single(
     quant["http://purl.org/goodrelations/v1#hasUnitOfMeasurement"],

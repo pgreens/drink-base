@@ -24,19 +24,15 @@ h1 {
   position: absolute;
   right: 50;
   z-index: 10;
-}
-
-.ingredient-buttonA {
-  width: 100;
-  padding: 10;
-  background-color: #fff;
-  border-style: none;
-  border-radius: 3;
-  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 300px
 }
 
 .ingredient-button {
-  width: 100%;
+  width: 140px;
   background-color: #15151a;
   border-style: solid;
   color: #838ca2;

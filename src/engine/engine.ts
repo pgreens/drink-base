@@ -1,7 +1,13 @@
-import { AppIngredient, constrainIngredient } from "../../ontology/constraints";
-import { Cocktail, OldFashioned, SideCar } from "../../ontology/types";
+import {
+  AppIngredient,
+  constrainIngredient,
+  AppCocktail,
+  constrainCocktail,
+} from "../../ontology/constraints";
+import { Cocktail } from "../../ontology/types";
 import { Glass } from "../glass";
-import { JsonLdObject } from "../jsonld/jsonld";
+import { JsonLdObject, query } from "../jsonld/jsonld";
+import { isAnIndividualOfType } from "../jsonld/types";
 import { convert } from "../quantity";
 
 interface VectorWrapper {
@@ -26,7 +32,136 @@ export function match(glass: Glass, doc: JsonLdObject[]): [string, number] {
 }
 
 export function buildSpace(doc: JsonLdObject[]): VectorWrapper[] {
-  const drinks: Cocktail[] = [OldFashioned, SideCar];
+  const drinks: AppCocktail[] = doc
+    .filter((thing) =>
+      isAnIndividualOfType(thing, "http://rdfs.co/bevon/Cocktail", doc)
+    )
+    .map((c: Cocktail) => {
+      console.log("cocktail", c);
+      if (!c["@id"]) {
+        throw new Error(`Assertion error: cocktail must have an id`);
+      }
+      return query(
+        {
+          properties: [
+            { name: "@id" },
+            {
+              name: "http://www.w3.org/2000/01/rdf-schema#label",
+              query: {
+                properties: [
+                  { type: "String", query: { properties: [] } },
+                  {
+                    type: "LangString",
+                    query: {
+                      properties: [{ name: "@language" }, { name: "@value" }],
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              name: "http://rdfs.co/bevon/ingredient",
+              query: {
+                properties: [
+                  {
+                    name: "http://rdfs.co/bevon/food",
+                    query: {
+                      properties: [
+                        { name: "@id" },
+                        {
+                          name: "http://www.w3.org/2000/01/rdf-schema#label",
+                          query: {
+                            properties: [
+                              { type: "String", query: { properties: [] } },
+                              {
+                                type: "LangString",
+                                query: {
+                                  properties: [
+                                    { name: "@language" },
+                                    { name: "@value" },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    name: "http://rdfs.co/bevon/quantity",
+                    query: {
+                      properties: [
+                        { type: "String", query: { properties: [] } },
+                        {
+                          type: "Number",
+                          query: { properties: [] },
+                        },
+                        {
+                          type: "http://purl.org/goodrelations/v1#QuantitativeValueInteger",
+                          query: {
+                            properties: [
+                              {
+                                name: "http://purl.org/goodrelations/v1#hasUnitOfMeasurement",
+                              },
+                              {
+                                name: "http://purl.org/goodrelations/v1#hasValue",
+                              },
+                            ],
+                          },
+                        },
+                        {
+                          type: "http://purl.org/goodrelations/v1#QuantitativeValue",
+                          query: {
+                            properties: [
+                              {
+                                name: "http://purl.org/goodrelations/v1#hasUnitOfMeasurement",
+                              },
+                              {
+                                name: "http://purl.org/goodrelations/v1#hasValue",
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        doc,
+        c["@id"]
+      ) as Cocktail;
+      //   if (c["http://rdfs.co/bevon/ingredient"]) {
+      //     const resolvedIngredients = c["http://rdfs.co/bevon/ingredient"].map(
+      //       (ing) => {
+      //         if (ing["@id"] && Object.keys(ing).length === 1) {
+      //           // this is a reference to another node
+      //           const dereferenced = doc.find(
+      //             (thing2) => thing2["@id"] === ing["@id"]
+      //           );
+      //           if (dereferenced) {
+      //             console.log("found ingredient", dereferenced);
+      //             return dereferenced;
+      //             // need †o also resolve food entries here
+      //           } else {
+      //             throw new Error(`unable to lookup node with id ${ing["@id"]}`);
+      //           }
+      //         }
+      //         return ing;
+      //       }
+      //     );
+      //     return {
+      //       ...c,
+      //       "http://rdfs.co/bevon/ingredient": resolvedIngredients,
+      //     };
+      //   }
+      //   return c;
+    })
+    .map(constrainCocktail);
+
   return drinks.map((drink) => {
     if (!drink["http://rdfs.co/bevon/ingredient"]) {
       throw new Error("Ingredients are required!");

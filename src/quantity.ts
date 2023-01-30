@@ -35,6 +35,10 @@ function unitName(unitCode: string): string {
   switch (unitCode) {
     case "dash":
       return "dash";
+    case "rinse":
+      return "rinse";
+    case "garnish":
+      return "garnish";
     case "OZA":
       return "ounce";
     case "G24":
@@ -64,7 +68,9 @@ export function convert(
 
   if (conversion.length === 0) {
     throw new Error(
-      `Unsupported conversion: ${quantity["http://purl.org/goodrelations/v1#hasUnitOfMeasurement"]} to ${toUnit}`
+      `Unsupported conversion: ${JSON.stringify(
+        quantity["http://purl.org/goodrelations/v1#hasUnitOfMeasurement"]
+      )} to ${toUnit}`
     );
   }
 
@@ -91,6 +97,8 @@ enum Unit {
 
   // Volume - loose
   Dash = "dash",
+  Rinse = "rinse",
+  Garnish = "garnish",
 }
 
 interface UnitConversion {
@@ -143,6 +151,19 @@ const conversions: UnitConversion[] = [
     toUnitOfMeasurement: Unit.Milliliter,
     isExact: false,
     factor: fraction(1, 1),
+  },
+  {
+    fromUnitOfMeasurement: Unit.Rinse,
+    toUnitOfMeasurement: Unit.Milliliter,
+    isExact: false,
+    factor: fraction(1, 1),
+  },
+  // todo - this doesn't really make sense
+  {
+    fromUnitOfMeasurement: Unit.Garnish,
+    toUnitOfMeasurement: Unit.Milliliter,
+    isExact: false,
+    factor: fraction(1, 5),
   },
 ];
 

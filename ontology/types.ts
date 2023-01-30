@@ -73,177 +73,177 @@ export interface AromaticBitters extends Bitters {}
 
 export interface Curaçao extends Liqueur {}
 
-export const Bourbon: BourbonWhiskey & LiquidMixin = {
-  "@id": "http://kb.liquorpicker.com/Bourbon",
-  "http://www.w3.org/2000/01/rdf-schema#label": [
-    {
-      "@value": "Bourbon",
-      "@language": "en",
-    },
-  ],
-  "http://kb.liquorpicker.com/color": ["8c4707"],
-};
+// export const Bourbon: BourbonWhiskey & LiquidMixin = {
+//   "@id": "http://kb.liquorpicker.com/Bourbon",
+//   "http://www.w3.org/2000/01/rdf-schema#label": [
+//     {
+//       "@value": "Bourbon",
+//       "@language": "en",
+//     },
+//   ],
+//   "http://kb.liquorpicker.com/color": ["8c4707"],
+// };
 
-export const AngosturaBitters: AromaticBitters & LiquidMixin = {
-  "@id": "http://kb.liquorpicker.com/AngosturaBitters",
-  "http://www.w3.org/2000/01/rdf-schema#label": [
-    {
-      "@value": "Angostura Bitters",
-      "@language": "en",
-    },
-  ],
-  "http://kb.liquorpicker.com/color": ["771414"],
-};
+// export const AngosturaBitters: AromaticBitters & LiquidMixin = {
+//   "@id": "http://kb.liquorpicker.com/AngosturaBitters",
+//   "http://www.w3.org/2000/01/rdf-schema#label": [
+//     {
+//       "@value": "Angostura Bitters",
+//       "@language": "en",
+//     },
+//   ],
+//   "http://kb.liquorpicker.com/color": ["771414"],
+// };
 
-export const Cognac: Bevon_Cognac & LiquidMixin = {
-  "@id": "http://kb.liquorpicker.com/Cognac",
-  "http://www.w3.org/2000/01/rdf-schema#label": [
-    {
-      "@value": "Cognac",
-      "@language": "en",
-    },
-  ],
-  "http://kb.liquorpicker.com/color": ["915318"],
-};
+// export const Cognac: Bevon_Cognac & LiquidMixin = {
+//   "@id": "http://kb.liquorpicker.com/Cognac",
+//   "http://www.w3.org/2000/01/rdf-schema#label": [
+//     {
+//       "@value": "Cognac",
+//       "@language": "en",
+//     },
+//   ],
+//   "http://kb.liquorpicker.com/color": ["915318"],
+// };
 
-export const DryCuraçao: Curaçao & LiquidMixin = {
-  "@id": "http://kb.liquorpicker.com/DryCuraçao",
-  "http://www.w3.org/2000/01/rdf-schema#label": [
-    {
-      "@value": "Dry Curaçao",
-      "@language": "en",
-    },
-  ],
-  "http://kb.liquorpicker.com/color": ["f97b04"],
-};
+// export const DryCuraçao: Curaçao & LiquidMixin = {
+//   "@id": "http://kb.liquorpicker.com/DryCuraçao",
+//   "http://www.w3.org/2000/01/rdf-schema#label": [
+//     {
+//       "@value": "Dry Curaçao",
+//       "@language": "en",
+//     },
+//   ],
+//   "http://kb.liquorpicker.com/color": ["f97b04"],
+// };
 
-export const SimpleSyrup: Food & LiquidMixin = {
-  "@id": "http://kb.liquorpicker.com/SimpleSyrup",
-  "http://www.w3.org/2000/01/rdf-schema#label": [
-    {
-      "@value": "Simple syrup",
-      "@language": "en",
-    },
-  ],
-  "http://kb.liquorpicker.com/color": ["f4f4f4"],
-};
+// export const SimpleSyrup: Food & LiquidMixin = {
+//   "@id": "http://kb.liquorpicker.com/SimpleSyrup",
+//   "http://www.w3.org/2000/01/rdf-schema#label": [
+//     {
+//       "@value": "Simple syrup",
+//       "@language": "en",
+//     },
+//   ],
+//   "http://kb.liquorpicker.com/color": ["f4f4f4"],
+// };
 
-export const LemonTwist: Mixin = {
-  "@id": "http://kb.liquorpicker.com/LemonTwist",
-  "http://www.w3.org/2000/01/rdf-schema#label": [
-    {
-      "@value": "Lemon twist",
-      "@language": "en",
-    },
-  ],
-};
+// export const LemonTwist: Mixin = {
+//   "@id": "http://kb.liquorpicker.com/LemonTwist",
+//   "http://www.w3.org/2000/01/rdf-schema#label": [
+//     {
+//       "@value": "Lemon twist",
+//       "@language": "en",
+//     },
+//   ],
+// };
 
-export const OrangeTwist: Mixin = {
-  "@id": "http://kb.liquorpicker.com/OrangeTwist",
-  "http://www.w3.org/2000/01/rdf-schema#label": [
-    {
-      "@value": "Orange twist",
-      "@language": "en",
-    },
-  ],
-};
+// export const OrangeTwist: Mixin = {
+//   "@id": "http://kb.liquorpicker.com/OrangeTwist",
+//   "http://www.w3.org/2000/01/rdf-schema#label": [
+//     {
+//       "@value": "Orange twist",
+//       "@language": "en",
+//     },
+//   ],
+// };
 
-export const FreshLemonJuice: Mixin = {
-  "@id": "http://kb.liquorpicker.com/FreshLemonJuice",
-  "http://www.w3.org/2000/01/rdf-schema#label": [
-    {
-      "@value": "Fresh lemon juice",
-      "@language": "en",
-    },
-  ],
-};
+// export const FreshLemonJuice: Mixin = {
+//   "@id": "http://kb.liquorpicker.com/FreshLemonJuice",
+//   "http://www.w3.org/2000/01/rdf-schema#label": [
+//     {
+//       "@value": "Fresh lemon juice",
+//       "@language": "en",
+//     },
+//   ],
+// };
 
-export const OldFashioned: Cocktail = {
-  "@id": "http://kb.liquorpicker.com/OldFashioned",
-  "http://rdfs.co/bevon/name": [
-    {
-      "@language": "en",
-      "@value": "Old Fashioned",
-    },
-  ],
-  "http://rdfs.co/bevon/ingredient": [
-    {
-      "http://rdfs.co/bevon/food": [Bourbon],
-      "http://rdfs.co/bevon/quantity": [
-        {
-          "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": ["OZA"],
-          "http://purl.org/goodrelations/v1#hasValue": [2],
-        },
-      ],
-    },
-    {
-      "http://rdfs.co/bevon/food": [AngosturaBitters],
-      "http://rdfs.co/bevon/quantity": [
-        {
-          "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": ["dash"],
-          "http://purl.org/goodrelations/v1#hasValue": [2],
-        },
-      ],
-    },
-    {
-      "http://rdfs.co/bevon/food": [SimpleSyrup],
-      "http://rdfs.co/bevon/quantity": [
-        {
-          "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": ["G25"],
-          "http://purl.org/goodrelations/v1#hasValue": [1],
-        },
-      ],
-    },
-    {
-      "http://rdfs.co/bevon/food": [OrangeTwist],
-      "http://rdfs.co/bevon/quantity": 1,
-    },
-    {
-      "http://rdfs.co/bevon/food": [LemonTwist],
-      "http://rdfs.co/bevon/quantity": 1,
-    },
-  ],
-};
+// export const OldFashioned: Cocktail = {
+//   "@id": "http://kb.liquorpicker.com/OldFashioned",
+//   "http://rdfs.co/bevon/name": [
+//     {
+//       "@language": "en",
+//       "@value": "Old Fashioned",
+//     },
+//   ],
+//   "http://rdfs.co/bevon/ingredient": [
+//     {
+//       "http://rdfs.co/bevon/food": [Bourbon],
+//       "http://rdfs.co/bevon/quantity": [
+//         {
+//           "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": ["OZA"],
+//           "http://purl.org/goodrelations/v1#hasValue": [2],
+//         },
+//       ],
+//     },
+//     {
+//       "http://rdfs.co/bevon/food": [AngosturaBitters],
+//       "http://rdfs.co/bevon/quantity": [
+//         {
+//           "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": ["dash"],
+//           "http://purl.org/goodrelations/v1#hasValue": [2],
+//         },
+//       ],
+//     },
+//     {
+//       "http://rdfs.co/bevon/food": [SimpleSyrup],
+//       "http://rdfs.co/bevon/quantity": [
+//         {
+//           "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": ["G25"],
+//           "http://purl.org/goodrelations/v1#hasValue": [1],
+//         },
+//       ],
+//     },
+//     {
+//       "http://rdfs.co/bevon/food": [OrangeTwist],
+//       "http://rdfs.co/bevon/quantity": 1,
+//     },
+//     {
+//       "http://rdfs.co/bevon/food": [LemonTwist],
+//       "http://rdfs.co/bevon/quantity": 1,
+//     },
+//   ],
+// };
 
-export const SideCar: Cocktail = {
-  "@id": "http://kb.liquorpicker.com/SideCar",
-  "http://rdfs.co/bevon/name": [
-    {
-      "@language": "en",
-      "@value": "Side car",
-    },
-  ],
-  "http://rdfs.co/bevon/ingredient": [
-    {
-      "http://rdfs.co/bevon/food": [Cognac],
-      "http://rdfs.co/bevon/quantity": [
-        {
-          "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": ["OZA"],
-          "http://purl.org/goodrelations/v1#hasValue": [1.5],
-        },
-      ],
-    },
-    {
-      "http://rdfs.co/bevon/food": [DryCuraçao],
-      "http://rdfs.co/bevon/quantity": [
-        {
-          "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": ["OZA"],
-          "http://purl.org/goodrelations/v1#hasValue": [1],
-        },
-      ],
-    },
-    {
-      "http://rdfs.co/bevon/food": [FreshLemonJuice],
-      "http://rdfs.co/bevon/quantity": [
-        {
-          "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": ["OZA"],
-          "http://purl.org/goodrelations/v1#hasValue": [0.75],
-        },
-      ],
-    },
-    {
-      "http://rdfs.co/bevon/food": [OrangeTwist],
-      "http://rdfs.co/bevon/quantity": 1,
-    },
-  ],
-};
+// export const SideCar: Cocktail = {
+//   "@id": "http://kb.liquorpicker.com/SideCar",
+//   "http://rdfs.co/bevon/name": [
+//     {
+//       "@language": "en",
+//       "@value": "Side car",
+//     },
+//   ],
+//   "http://rdfs.co/bevon/ingredient": [
+//     {
+//       "http://rdfs.co/bevon/food": [Cognac],
+//       "http://rdfs.co/bevon/quantity": [
+//         {
+//           "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": ["OZA"],
+//           "http://purl.org/goodrelations/v1#hasValue": [1.5],
+//         },
+//       ],
+//     },
+//     {
+//       "http://rdfs.co/bevon/food": [DryCuraçao],
+//       "http://rdfs.co/bevon/quantity": [
+//         {
+//           "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": ["OZA"],
+//           "http://purl.org/goodrelations/v1#hasValue": [1],
+//         },
+//       ],
+//     },
+//     {
+//       "http://rdfs.co/bevon/food": [FreshLemonJuice],
+//       "http://rdfs.co/bevon/quantity": [
+//         {
+//           "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": ["OZA"],
+//           "http://purl.org/goodrelations/v1#hasValue": [0.75],
+//         },
+//       ],
+//     },
+//     {
+//       "http://rdfs.co/bevon/food": [OrangeTwist],
+//       "http://rdfs.co/bevon/quantity": 1,
+//     },
+//   ],
+// };

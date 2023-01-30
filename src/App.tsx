@@ -9,13 +9,13 @@ import { isAnIndividualOfType } from "./jsonld/types";
 import { match } from "./engine/engine";
 import { Food } from "../ontology/types";
 import "./App.css";
-import { displayNameFor } from "./jsonld/jsonld";
+import { displayNameFor, testQ } from "./jsonld/jsonld";
 
 const foods = ontology.filter((thing) =>
   isAnIndividualOfType(thing, "http://kb.liquorpicker.com/Mixin", ontology)
 );
 const ingredients = defaultIngredients(foods as Food[]);
-
+console.log("query", JSON.stringify(testQ(ontology)));
 type Optional<T> =
   | {
       isPresent: false;
