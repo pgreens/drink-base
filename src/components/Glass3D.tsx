@@ -133,7 +133,7 @@ function LiquidIngredient3D({
   meshProps: ThreeElements["mesh"];
 }) {
   const ref = React.useRef<THREE.Mesh>(null!);
-  const texture = useLoader(RGBELoader, "./royal_esplanade_1k.hdr");
+  const texture = useLoader(RGBELoader, "/static/royal_esplanade_1k.hdr");
   texture.mapping = THREE.EquirectangularReflectionMapping;
 
   if (typeof ingredient["http://rdfs.co/bevon/quantity"] === "number") {
