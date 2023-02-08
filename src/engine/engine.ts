@@ -134,31 +134,6 @@ export function buildSpace(doc: JsonLdObject[]): VectorWrapper[] {
         doc,
         c["@id"]
       ) as Cocktail;
-      //   if (c["http://rdfs.co/bevon/ingredient"]) {
-      //     const resolvedIngredients = c["http://rdfs.co/bevon/ingredient"].map(
-      //       (ing) => {
-      //         if (ing["@id"] && Object.keys(ing).length === 1) {
-      //           // this is a reference to another node
-      //           const dereferenced = doc.find(
-      //             (thing2) => thing2["@id"] === ing["@id"]
-      //           );
-      //           if (dereferenced) {
-      //             console.log("found ingredient", dereferenced);
-      //             return dereferenced;
-      //             // need †o also resolve food entries here
-      //           } else {
-      //             throw new Error(`unable to lookup node with id ${ing["@id"]}`);
-      //           }
-      //         }
-      //         return ing;
-      //       }
-      //     );
-      //     return {
-      //       ...c,
-      //       "http://rdfs.co/bevon/ingredient": resolvedIngredients,
-      //     };
-      //   }
-      //   return c;
     })
     .map(constrainCocktail);
 

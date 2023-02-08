@@ -28,11 +28,25 @@ h1 {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  width: 300px
+  width: 400px
 }
 
 .ingredient-button {
   width: 140px;
+  background-color: #15151a;
+  border-style: solid;
+  color: #838ca2;
+  border-width: 1px;
+  border-color: #838ca2;
+  border-radius: 6px;
+  height: 2em;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.ingredient-unit-button {
+  margin-left: 5px;
+  width: 40px;
   background-color: #15151a;
   border-style: solid;
   color: #838ca2;

@@ -31,7 +31,7 @@ export function toString(q: AppQuantitativeValue) {
   )}`;
 }
 
-function unitName(unitCode: string): string {
+export function unitName(unitCode: string): string {
   switch (unitCode) {
     case "dash":
       return "dash";
@@ -45,6 +45,8 @@ function unitName(unitCode: string): string {
       return "tablespoon";
     case "G25":
       return "teaspoon";
+    case "MLT":
+      return "milliliter";
     default:
       return unitCode;
   }
@@ -85,7 +87,7 @@ export function convert(
   };
 }
 
-enum Unit {
+export enum Unit {
   // Volume - metric
   Milliliter = "MLT",
   Centiliter = "CLT",
@@ -129,9 +131,9 @@ const conversions: UnitConversion[] = [
   },
   {
     fromUnitOfMeasurement: Unit.Liter,
-    toUnitOfMeasurement: Unit.Centiliter,
+    toUnitOfMeasurement: Unit.Milliliter,
     isExact: true,
-    factor: fraction(100, 1),
+    factor: fraction(1000, 1),
   },
   {
     fromUnitOfMeasurement: Unit.FluidOunce,
