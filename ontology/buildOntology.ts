@@ -1,9 +1,4 @@
-import {
-  createReadStream,
-  createWriteStream,
-  readFileSync,
-  writeFileSync,
-} from "fs";
+import { createReadStream, writeFileSync } from "fs";
 import * as stream from "stream";
 import { StreamParser, StreamWriter } from "n3";
 import * as jsonld from "jsonld";
@@ -14,11 +9,8 @@ const writer = new StreamWriter({
 });
 parser.pipe(writer);
 
-// const out = createWriteStream("./ontology/ontology.rdf");
-// writer.pipe(out);
-
 const cocktails = createReadStream("./ontology/cocktail.ttl");
-const bevon = createReadStream("./ref/bevon.ttl");
+const bevon = createReadStream("./ontology/bevon.ttl");
 
 const readIter = concatStreams([cocktails, bevon]);
 const combined = stream.Readable.from(readIter);
@@ -29,7 +21,7 @@ streamToString(writer).then((rdf) => {
   jsonld
     .fromRDF(rdf as any)
     .then((json) =>
-      writeFileSync("./ontology/ontology.json", JSON.stringify(json))
+      writeFileSync("./build_only/ontology.json", JSON.stringify(json))
     );
 });
 

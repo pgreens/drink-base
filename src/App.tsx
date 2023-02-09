@@ -1,7 +1,7 @@
 import React from "react";
 import Ingredients from "./components/Ingredients";
 import { addIngredient, Glass } from "./glass";
-import * as ontology from "../ontology/ontology.json";
+import * as ontology from "../dist/ontology/ontology.json";
 import { defaultIngredients } from "./ingredients";
 import GlassText from "./components/GlassText";
 import Glass3D from "./components/Glass3D";

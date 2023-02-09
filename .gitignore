@@ -129,8 +129,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# notes and misc
+# app specific
 ref/
+build_only/
 
 # Mac
 .DS_Store

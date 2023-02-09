@@ -2,7 +2,7 @@ import { displayQuantity } from "./glass";
 import { displayNameForFood } from "./jsonld/food";
 import { isA } from "./jsonld/types";
 // import { QuantitativeValue } from "./quantity";
-import * as full from "../ontology/ontology.json";
+import * as full from "../dist/ontology/ontology.json";
 import {
   AppIngredient,
   constrainIngredient,
