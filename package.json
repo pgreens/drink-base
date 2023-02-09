@@ -1,9 +1,14 @@
 {
   "name": "liquor-picker",
-  "source": [
-    "src/index.html",
-    "static/royal_esplanade_1k.hdr"
-  ],
+  "targets": {
+    "default": {
+      "source": [
+        "index.html",
+        "static/royal_esplanade_1k.hdr"
+      ],
+      "publicUrl": "./"
+    }
+  },
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "test": "jest",
