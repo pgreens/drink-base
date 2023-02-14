@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Ref, useEffect } from "react";
 import { Glass } from "../glass";
 import * as THREE from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
@@ -56,22 +56,14 @@ export default function Glass3D({ glass }: { glass: Glass }) {
     <div className="glass">
       <Canvas
         camera={{
-          position: [0, 30, 120],
+          position: [0, 30, window.innerWidth * -0.011389 + 154.4417],
           fov: 75,
           quaternion: quaternion,
-          view: {
-            enabled: true,
-            fullWidth: 100,
-            fullHeight: 100,
-            width: 100,
-            height: 100,
-            offsetX: 30,
-            offsetY: 0,
-          },
         }}
         shadows={true}
       >
         <color attach="background" args={["#15151a"]} />
+        <ReferencePoint />
         {liquids.map((ingredient, i) => (
           <LiquidIngredient3D
             key={i}
@@ -144,9 +136,6 @@ function LiquidIngredient3D({
     convert(ingredient["http://rdfs.co/bevon/quantity"], "MLT")[
       "http://purl.org/goodrelations/v1#hasValue"
     ] / 4;
-  // ingredient["http://rdfs.co/bevon/quantity"][
-  //   "http://purl.org/goodrelations/v1#hasValue"
-  // ] * 10;
   const color = ingredient["http://rdfs.co/bevon/food"][
     "http://kb.liquorpicker.com/color"
   ]
@@ -175,6 +164,52 @@ function LiquidIngredient3D({
         side={THREE.DoubleSide}
         transparent={true}
       />
+    </mesh>
+  );
+}
+
+function ReferencePoint() {
+  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+  const pointRef = React.useRef<THREE.Mesh>(null!);
+  const camVector = new THREE.Vector3();
+
+  useFrame((state) => {
+    state.camera.lookAt(pointRef.current.position);
+    state.camera.position.lerp(
+      camVector.set(0, 30, windowWidth * -0.02 + 155), //
+      0.1
+    );
+    state.camera.setViewOffset(
+      windowWidth,
+      window.innerHeight,
+      windowWidth * -0.01518 + 250,
+      0,
+      windowWidth,
+      window.innerHeight
+    );
+    state.camera.updateProjectionMatrix();
+    return null;
+  });
+
+  const onResize = () => {
+    console.log("resizing");
+    setWindowWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    if (!window) {
+      return;
+    }
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
+  });
+
+  return (
+    <mesh ref={pointRef}>
+      <circleGeometry args={[0.01]} />
+      <meshBasicMaterial color={0x000000} />
     </mesh>
   );
 }

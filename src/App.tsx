@@ -8,6 +8,7 @@ import Glass3D from "./components/Glass3D";
 import { isAnIndividualOfType } from "./jsonld/types";
 import { match } from "./engine/engine";
 import { Food } from "../ontology/types";
+import "./sanitize.css";
 import "./App.css";
 import { displayNameFor } from "./jsonld/jsonld";
 import { AppIngredient } from "../ontology/constraints";

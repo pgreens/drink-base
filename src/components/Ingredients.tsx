@@ -9,6 +9,7 @@ export interface OnAddIngredientEventHandler {
 export interface SwitchUnitHandler {
   (ingredient: AppIngredient): any;
 }
+
 export default function Ingredients({
   ingredients,
   onAddIngredientHandler,
@@ -18,35 +19,55 @@ export default function Ingredients({
   onAddIngredientHandler: OnAddIngredientEventHandler;
   switchUnit: SwitchUnitHandler;
 }) {
+  const [searchText, setSearchText] = React.useState("");
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value);
+  };
+
   return (
-    <ul className="ingredient-options-list">
-      {ingredients.map((i) => (
-        <li
-          style={{ marginBottom: 5 }}
-          key={i["http://rdfs.co/bevon/food"]["@id"]}
-        >
-          <div>
-            <button
-              className="ingredient-button"
-              onClick={(event) => onAddIngredientHandler(i)}
-            >
-              {displayNameForFood(i["http://rdfs.co/bevon/food"], "en")}
-            </button>
-            <button
-              className="ingredient-unit-button"
-              onClick={() => switchUnit(i)}
-            >
-              {typeof i["http://rdfs.co/bevon/quantity"] === "number"
-                ? "n/a"
-                : unitName(
-                    i["http://rdfs.co/bevon/quantity"][
-                      "http://purl.org/goodrelations/v1#hasUnitOfMeasurement"
-                    ]
-                  )}
-            </button>
-          </div>
-        </li>
-      ))}
-    </ul>
+    <section className="ingredient-options-list">
+      <label className="ingredient-search-label" htmlFor="ingredient-search">
+        Search ingredients
+      </label>
+      <input
+        id="ingredient-search"
+        type="text"
+        placeholder="search ingredients"
+        onChange={handleSearchChange}
+        value={searchText}
+      />
+      <ul>
+        {ingredients
+          .filter((i) =>
+            displayNameForFood(i["http://rdfs.co/bevon/food"], "en")
+              .toUpperCase()
+              .includes(searchText.toUpperCase())
+          )
+          .map((i) => (
+            <li key={i["http://rdfs.co/bevon/food"]["@id"]}>
+              <button
+                className="ingredient-button"
+                onClick={(event) => onAddIngredientHandler(i)}
+              >
+                {displayNameForFood(i["http://rdfs.co/bevon/food"], "en")}
+              </button>
+              <button
+                className="ingredient-unit-button"
+                onClick={() => switchUnit(i)}
+              >
+                {typeof i["http://rdfs.co/bevon/quantity"] === "number"
+                  ? "n/a"
+                  : unitName(
+                      i["http://rdfs.co/bevon/quantity"][
+                        "http://purl.org/goodrelations/v1#hasUnitOfMeasurement"
+                      ]
+                    )}
+              </button>
+            </li>
+          ))}
+      </ul>
+      <div className="ingredient-options-list__overlay" />
+    </section>
   );
 }

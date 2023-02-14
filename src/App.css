@@ -1,6 +1,7 @@
 body {
   font-family: Helvetica, Arial, sans-serif;
 }
+
 h1 {
   color: #fff;
   position: relative;
@@ -20,15 +21,65 @@ h1 {
 }
 
 .ingredient-options-list {
-  list-style: none;
   position: absolute;
-  right: 50;
+  right: 20px;
   z-index: 10;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 400px
+}
+
+.ingredient-options-list ul {
+  padding-left: 0;
+  list-style: none;
+  max-height: 30vh;
+  overflow: scroll;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.ingredient-options-list__overlay {
+  pointer-events: none;
+  position: relative;
+  height: 40px;
+  background: linear-gradient(transparent, #15151a);
+  margin-top: -40px;
+  z-index: 11;
+}
+
+@media (min-width: 1024px) {
+  .ingredient-options-list ul {
+    max-height: 70vh;
+  }
+}
+
+.ingredient-search-label {
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  color: #fff;
+}
+
+#ingredient-search {
+  width: 100%;
+  background-color: #15151a;
+  border-style: solid;
+  color: #838ca2;
+  border-width: 1px;
+  border-color: #838ca2;
+  border-radius: 6px;
+  height: 2em;
+  padding: 0 1em 0 1em;
+}
+
+.ingredient-options-list li {
+  display: grid;
+  grid-template-columns: 1fr 60px;
+  row-gap: 1em;
+  column-gap: 5px;
+  margin-bottom: 5px;
 }
 
 .ingredient-button {
@@ -41,12 +92,9 @@ h1 {
   border-radius: 6px;
   height: 2em;
   cursor: pointer;
-  z-index: 10;
 }
 
 .ingredient-unit-button {
-  margin-left: 5px;
-  width: 40px;
   background-color: #15151a;
   border-style: solid;
   color: #838ca2;
@@ -55,7 +103,6 @@ h1 {
   border-radius: 6px;
   height: 2em;
   cursor: pointer;
-  z-index: 10;
 }
 
 .glass-actions {
@@ -85,7 +132,7 @@ h1 {
 #mix-button {
   min-width: 200px;
   flex-grow: 1;
-  margin-right: 20px
+  margin-right: 20px;
 }
 
 #dump-button {
