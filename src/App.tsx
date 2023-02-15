@@ -87,7 +87,12 @@ export function App(): JSX.Element {
   return (
     <>
       <h1>cocktail</h1>
-      <Glass3D glass={glass} />
+      <figure>
+        <Glass3D glass={glass} describedById="text-description" />
+        <figcaption id="text-description">
+          <GlassText glass={glass} />
+        </figcaption>
+      </figure>
       <Ingredients
         ingredients={ingredients}
         onAddIngredientHandler={(ingredient) =>
