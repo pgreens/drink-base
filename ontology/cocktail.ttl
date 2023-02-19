@@ -37,12 +37,20 @@
   rdfs:label "Aromatic bitters"@en ;
   skos:definition "TBD" .
 
+:OrangeBitters a owl:Class ;
+  rdfs:subClassOf :Bitters ;
+  rdfs:label "Orange bitters"@en .
+
 :Curaçao a owl:Class ;
   rdfs:subClassOf bevon:Liqueur ;
   skos:prefLabel "Curaçao"@en ;
   rdfs:label "Curaçao"@en ;
   skos:definition "TBD" ;
   rdfs:seeAlso <https://en.wikipedia.org/wiki/Cura%C3%A7ao_(liqueur)> .
+
+:Amer a owl:Class ;
+  rdfs:subClassOf bevon:Liqueur ;
+  rdfs:label "Amer"@en .
 
 :SparklingWine a owl:Class ;
   rdfs:subClassOf bevon:Wine ;
@@ -63,6 +71,30 @@
 :Syrup a owl:Class ;
   rdfs:subClassOf :Sweetener ;
   rdfs:label "Syrup"@en .
+
+:Bénédictine a owl:Class ;
+  rdfs:subClassOf bevon:liqueur ;
+  rdfs:label "Bénédictine"@en .
+
+:FortifiedWine a owl:Class ;
+  rdfs:subClassOf bevon:FermentedBeverage ;
+  rdfs:label "Fortified wine"@en .
+
+:Sherry a owl:Class ;
+  rdfs:subClassOf :FortifiedWine ;
+  rdfs:label "Sherry"@en .
+
+:DryVermouth a owl:Class ;
+  rdfs:subClassOf :FortifiedWine ;
+  rdfs:label "Dry vermouth"@en .
+
+:BlancVermouth a owl:Class ;
+  rdfs:subClassOf :FortifiedWine ;
+  rdfs:label "Blanc vermouth"@en .
+
+:SweetVermouth a owl:Class ;
+  rdfs:subClassOf :FortifiedWine ;
+  rdfs:label "Sweet vermouth"@en .
 
 ## Properties
 
@@ -105,6 +137,12 @@
   rdfs:seeAlso <https://en.wikipedia.org/wiki/Angostura_bitters> ;
   :color "771414" .
 
+:BasicOrangeBitters a :OrangeBitters, :LiquidMixin ;
+  bevon:name "Orange Bitters"@en ;
+  rdfs:label "Orange Bitters"@en ;
+  rdfs:seeAlso <https://en.wikipedia.org/wiki/Orange_bitters> ;
+  :color "ffaf16;" .
+
 :Cognac a bevon:Cognac, :LiquidMixin ;
   bevon:name "Cognac"@en ;
   rdfs:label "Cognac"@en ;
@@ -115,6 +153,18 @@
   rdfs:label "Dry Curaçao"@en ;
   rdfs:seeAlso <https://en.wikipedia.org/wiki/Cura%C3%A7ao_(liqueur)> ;
   :color "f97b04" .
+
+:BasicAmer a :Amer, :LiquidMixin ;
+  rdfs:label "Amer"@en ;
+  :color "100b08" .
+
+:BasicBénédictine a :Bénédictine, :LiquidMixin ;
+  rdfs:label "Bénédictine"@en ;
+  :color "f4db90" .
+
+:Campari a bevon:Liqueur, :LiquidMixin ;
+  rdfs:label "Campari"@en ;
+  :color "f7122a" .
 
 :DryChampagne a :Champagne, :LiquidMixin ;
   rdfs:label "Dry Champagne"@en ;
@@ -128,9 +178,13 @@
   rdfs:label "Dry Vermouth"@en ;
   :color "aac752" .
 
+:BasicBlancVermouth a :BlancVermouth, :LiquidMixin ;
+  rdfs:label "Blanc Vermouth"@en ;
+  :color "aac752" .
+
 :BasicSweetVermouth a :SweetVermouth, :LiquidMixin ;
   rdfs:label "Sweet vermouth"@en ;
-  :color "" .
+  :color "d25c22" .
 
 :BasicVodka a bevon:Vodka, :LiquidMixin ;
   rdfs:label "Vodka"@en ;
@@ -143,6 +197,26 @@
 :BasicGin a bevon:Gin, :LiquidMixin ;
   rdfs:label "Gin"@en ;
   :color "ffffff" . # transparent
+
+:BasicTequila a bevon:Tequila, :LiquidMixin ;
+  rdfs:label "Tequila"@en ;
+  :color "ffffff" . # transparent
+
+:BasicDrySherry a :Sherry, :LiquidMixin ;
+  rdfs:label "Dry Sherry"@en ;
+  :color "fee25a" .
+
+:BasicScotch a bevon:ScotchWhisky, :LiquidMixin ;
+  rdfs:label "Scotch"@en ;
+  :color "5bb2e" .
+
+:CrèmeDeViolette a bevon:Liqueur, :LiquidMixin ;
+  rdfs:label "Crème de Violette"@en ;
+  :color "181228" .
+
+:MarischinoLiquoer a bevon:Liqueur, :LiquidMixin ;
+  rdfs:label "Marischino liqueur"@en ;
+  :color "ffffff" . #transparent
 
 ### Syrup and Sugar ###
 
@@ -172,6 +246,9 @@
   rdfs:label "Orange twist"@en ;
   bevon:name "Orange twist"@en .
 
+:OrangeSlice a :Mixin ;
+  rdfs:label "Orange slice"@en .
+
 :FreshLemonJuice a bevon:Beverage, :LiquidMixin ;
   bevon:name "Fresh lemon juice"@en ;
   rdfs:label "Fresh lemon juice"@en ;
@@ -197,6 +274,10 @@
 
 :OneOrangeTwist a food:Ingredient ;
   bevon:food :OrangeTwist ;
+  bevon:quantity "1"^^xsd:int .
+
+:OneOrangeSlice a food:Ingredient ;
+  bevon:food :OrangeSlice ;
   bevon:quantity "1"^^xsd:int .
 
 :OneOlive a food:ingredient ;
@@ -448,6 +529,28 @@
     ]
   ] .
 
+:SimpleGinMartini a owl:NamedIndividual , bevon:Cocktail ;
+  rdfs:label "Gin Martini"@en ;
+  bevon:ingredient [
+    a food:Ingredient ;
+    bevon:food :BasicGin ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "2"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicDryVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "1"^^xsd:float
+    ]
+  ] .
+
+
 :GinMartini a owl:NamedIndividual , bevon:Cocktail ;
   rdfs:label "Gin Martini"@en ;
   bevon:ingredient [
@@ -568,6 +671,49 @@
   ] ,
   :OneLemonTwist .
 
+:DryMartini a owl:NamedIndividual , bevon:Cocktail ;
+  rdfs:label "Dry Martini"@en ;
+  bevon:ingredient [
+    a food:Ingredient ;
+    bevon:food :BasicGin ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "2"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicDryVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".25"^^xsd:float
+    ]
+  ] .
+
+:WetMartini a owl:NamedIndividual , bevon:Cocktail ;
+  rdfs:label "Wet Martini"@en ;
+  bevon:ingredient [
+    a food:Ingredient ;
+    bevon:food :BasicGin ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "1.5"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicDryVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "1.5"^^xsd:float
+    ]
+  ] ,
+  :OneOlive .
+
 :Manhattan a owl:NamedIndividual , bevon:Cocktail ;
   rdfs:label "Manhattan"@en ;
   bevon:ingredient [
@@ -598,6 +744,451 @@
     ]
   ] ,
   :OneBrandiedCherry .
+
+:PerfectManhattan a owl:NamedIndividual , bevon:Cocktail ;
+  rdfs:label "Perfect Manhattan"@en ;
+  bevon:ingredient [
+    a food:Ingredient ;
+    bevon:food :RyeWhiskey ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "2"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicSweetVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".5"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicDryVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".5"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :AngosturaAromaticBitters ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "dash" ;
+      gr:hasValue "2"^^xsd:int
+    ]
+  ] ,
+  :OneLemonTwist .
+
+:Martinez a owl:NamedIndividual , bevon:Cocktail ;
+  rdfs:label "Martinez"@en ;
+  bevon:ingredient [
+    a food:Ingredient ;
+    bevon:food :BasicGin ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "1.5"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicSweetVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "1.5"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :MarischinoLiquoer ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "G25" ;
+      gr:hasValue "1"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicOrangeBitters ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "dash" ;
+      gr:hasValue "2"^^xsd:int
+    ]
+  ] ,
+  :OneLemonTwist .
+
+:Brooklyn a owl:NamedIndividual , bevon:Cocktail ;
+  rdfs:label "Perfect Manhattan"@en ;
+  bevon:ingredient [
+    a food:Ingredient ;
+    bevon:food :RyeWhiskey ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "2"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicDryVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".75"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicAmer ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".25"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :MarischinoLiquoer ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "G25" ;
+      gr:hasValue "1"^^xsd:float
+    ]
+  ] ,
+  :OneBrandiedCherry .
+
+:PoetsDream a owl:NamedIndividual , bevon:Cocktail ;
+  rdfs:label "Poet's Dream"@en ;
+  bevon:ingredient [
+    a food:Ingredient ;
+    bevon:food :BasicGin ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "2"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicDryVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".75"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicBénédictine ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".25"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicOrangeBitters ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "dash" ;
+      gr:hasValue "2"^^xsd:float
+    ]
+  ] ,
+  :OneLemonTwist .
+
+:Negroni a owl:NamedIndividual , bevon:Cocktail ;
+  rdfs:label "Negroni"@en ;
+  bevon:ingredient [
+    a food:Ingredient ;
+    bevon:food :BasicGin ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "1"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicSweetVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "1"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :Campari ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "1"^^xsd:float
+    ]
+  ] ,
+  :OneOrangeSlice .
+
+:LaRosita a owl:NamedIndividual , bevon:Cocktail ;
+  rdfs:label "La Rosita"@en ;
+  bevon:ingredient [
+    a food:Ingredient ;
+    bevon:food :BasicTequila ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "1.5"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicSweetVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".5"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicDryVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".5"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :Campari ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".5"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :AngosturaAromaticBitters ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "dash" ;
+      gr:hasValue "1"^^xsd:float
+    ]
+  ] ,
+  :OneOrangeTwist .
+
+:Boulevardier a owl:NamedIndividual , bevon:Cocktail ;
+  rdfs:label "Boulevardier"@en ;
+  bevon:ingredient [
+    a food:Ingredient ;
+    bevon:food :Bourbon ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "1.5"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicSweetVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".75"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :Campari ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".75"^^xsd:float
+    ]
+  ] ,
+  :OneBrandiedCherry .
+
+:OldPal a owl:NamedIndividual , bevon:Cocktail ;
+  rdfs:label "Old Pal"@en ;
+  bevon:ingredient [
+    a food:Ingredient ;
+    bevon:food :RyeWhiskey ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "1.5"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicDryVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".75"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :Campari ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".75"^^xsd:float
+    ]
+  ] ,
+  :OneLemonTwist .
+
+:Bamboo a owl:NamedIndividual , bevon:Cocktail ;
+  rdfs:label "Bamboo"@en ;
+  bevon:ingredient [
+    a food:Ingredient ;
+    bevon:food :BasicDrySherry ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "1.5"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicBlancVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".75"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicDryVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".75"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :Campari ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".5"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :BasicOrangeBitters ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "dash" ;
+      gr:hasValue "2"^^xsd:float
+    ]
+  ] ,
+  :OneLemonTwist .
+
+:Affinity a owl:NamedIndividual , bevon:Cocktail ;
+  rdfs:label "Affinity"@en ;
+  bevon:ingredient [
+    a food:Ingredient ;
+    bevon:food :BasicScotch ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "2"^^xsd:float
+    ]
+  ],
+  [
+    a food:Ingredient ;
+    bevon:food :BasicSweetVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".5"^^xsd:float
+    ]
+  ],
+  [
+    a food:Ingredient ;
+    bevon:food :BasicDryVermouth ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".5"^^xsd:float
+    ]
+  ],
+  [
+    a food:Ingredient ;
+    bevon:food :AngosturaAromaticBitters ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "dash" ;
+      gr:hasValue "2"^^xsd:int
+    ]
+  ],
+  :OneLemonTwist .
+
+:Aviation a owl:NamedIndividual , bevon:Cocktail ;
+  rdfs:label "Aviation"@en ;
+  bevon:ingredient [
+    a food:Ingredient ;
+    bevon:food :BasicGin ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue "2"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :CrèmeDeViolette ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".25"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :MarischinoLiquoer ;
+    bevon:quantity [
+      a gr:QuantitativeValueInteger ;
+      gr:hasUnitOfMeasurement "G25" ;
+      gr:hasValue "1"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :FreshLemonJuice ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".75"^^xsd:float
+    ]
+  ] ,
+  [
+    a food:Ingredient ;
+    bevon:food :SimpleSyrup ;
+    bevon:quantity [
+      a gr:QuantitativeValueFloat ;
+      gr:hasUnitOfMeasurement "OZA" ;
+      gr:hasValue ".5"^^xsd:float
+    ]
+  ] .
+
+# Bobby Burns
+
+# Chancellor
+
+# Rob Roy
 
 # :XXX a owl:NamedIndividual , bevon:Cocktail ;
 #   rdfs:label "xxx"@en ;
