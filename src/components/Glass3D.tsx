@@ -14,7 +14,13 @@ import { convert } from "../quantity";
 
 const MIN_LINE_HEIGHT = 7;
 
-export default function Glass3D({ glass }: { glass: Glass }) {
+export default function Glass3D({
+  glass,
+  describedById,
+}: {
+  glass: Glass;
+  describedById: string;
+}) {
   const quaternion = new THREE.Quaternion();
   quaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 10);
 
@@ -61,6 +67,7 @@ export default function Glass3D({ glass }: { glass: Glass }) {
           quaternion: quaternion,
         }}
         shadows={true}
+        aria-describedby={describedById}
       >
         <color attach="background" args={["#15151a"]} />
         <ReferencePoint />
