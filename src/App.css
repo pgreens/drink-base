@@ -11,6 +11,12 @@ h1 {
   margin: 0;
 }
 
+figure,
+figcaption {
+  margin: 0;
+  padding: 0;
+}
+
 figcaption {
   height: 0;
 }
@@ -44,7 +50,7 @@ figcaption {
   position: relative;
   height: 40px;
   background: linear-gradient(transparent, #15151a);
-  margin-top: -40px;
+  margin-top: -39px;
   z-index: 11;
 }
 
@@ -84,6 +90,10 @@ figcaption {
   row-gap: 1em;
   column-gap: 5px;
   margin-bottom: 5px;
+}
+
+.ingredient-options-list li:last-child {
+  margin-bottom: 20px;
 }
 
 .ingredient-button {
