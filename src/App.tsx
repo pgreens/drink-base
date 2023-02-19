@@ -11,12 +11,15 @@ import { Food } from "../ontology/types";
 import "./sanitize.css";
 import "./App.css";
 import { displayNameFor } from "./jsonld/jsonld";
-import { AppIngredient } from "../ontology/constraints";
+import { AppIngredient, constrainIngredientFood } from "../ontology/constraints";
 import { Unit } from "./quantity";
 
-const foods = ontology.filter((thing) =>
-  isAnIndividualOfType(thing, "http://kb.liquorpicker.com/Mixin", ontology)
-);
+const foods = ontology
+  .filter((thing) =>
+    isAnIndividualOfType(thing, "http://kb.liquorpicker.com/Mixin", ontology)
+  )
+  .map(constrainIngredientFood);
+
 type Optional<T> =
   | {
       isPresent: false;
@@ -126,7 +129,7 @@ export function App(): JSX.Element {
 }
 
 function description(distance: number) {
-  if (distance < 0.01) {
+  if (distance < 0.03) {
     return "This is";
   } else if (distance < 0.2) {
     return "This is close to";
