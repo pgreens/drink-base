@@ -34,7 +34,9 @@ export interface AppCocktail extends Cocktail {
   "http://rdfs.co/bevon/ingredient": AppIngredient[];
 }
 
-export function constrainCocktail(cocktail: Cocktail): AppCocktail {
+export function constrainCocktail(
+  cocktail: Cocktail
+): AppCocktail | ConstraintFailure[] {
   if (!cocktail["@id"]) {
     throw new Error("id is required for a cocktail");
   }
@@ -45,17 +47,40 @@ export function constrainCocktail(cocktail: Cocktail): AppCocktail {
     throw new Error("ingredient is required for Cocktail");
   }
 
-  return {
-    "@id": cocktail["@id"],
-    "http://www.w3.org/2000/01/rdf-schema#label": constrainAppLabel(cocktail),
-    "http://rdfs.co/bevon/ingredient":
-      cocktail["http://rdfs.co/bevon/ingredient"].map(constrainIngredient),
-  };
+  const constrainedIngredients =
+    cocktail["http://rdfs.co/bevon/ingredient"].map(constrainIngredient);
+
+  const failures = constrainedIngredients.filter(isFailure).flatMap((f) => f);
+  if (failures.length > 0) {
+    return [
+      {
+        message: `constraint failure for cocktail ${cocktail["@id"]}`,
+      },
+      ...failures,
+    ];
+  } else {
+    const label = constrainAppLabel(cocktail);
+    if (isFailure(label)) {
+      return [
+        {
+          message: `constraint failure for cocktail ${cocktail["@id"]}`,
+        },
+        ...label,
+      ];
+    }
+    return {
+      "@id": cocktail["@id"],
+      "http://www.w3.org/2000/01/rdf-schema#label": label,
+      "http://rdfs.co/bevon/ingredient": constrainedIngredients.filter(
+        (v): v is AppIngredient => !isFailure(v)
+      ),
+    };
+  }
 }
 
 export function constrainIngredient(
   ingredient: Bevon_Ingredient | undefined
-): AppIngredient {
+): AppIngredient | ConstraintFailure[] {
   if (!ingredient) {
     throw new Error("Ingredient is undefined");
   }
@@ -75,25 +100,49 @@ export function constrainIngredient(
   );
 
   if (isFailure(food) || isFailure(quant)) {
-    throw new Error(`constraint failures: ${failures(food, quant)}`);
+    return failures(food, quant);
   }
 
   if (typeof quant !== "number") {
-    return {
-      ...ingredient,
-      "http://rdfs.co/bevon/food": constrainIngredientFood(food),
-      "http://rdfs.co/bevon/quantity": constrainQuantitativeValue(quant),
-    };
+    const constrainedQuant = constrainQuantitativeValue(quant);
+    const constrainedFood = constrainIngredientFood(food);
+
+    if (isFailure(constrainedQuant) || isFailure(constrainedFood)) {
+      return [
+        {
+          message: `constraint failure encountered for ingredient ${ingredient["@id"]} / ${ingredient["http://rdfs.co/bevon/food"]}`,
+        },
+        ...failures(constrainedQuant, constrainedFood),
+      ];
+    } else {
+      return {
+        ...ingredient,
+        "http://rdfs.co/bevon/food": constrainedFood,
+        "http://rdfs.co/bevon/quantity": constrainedQuant,
+      };
+    }
   } else {
+    // duplication
+    const constrainedFood = constrainIngredientFood(food);
+    if (isFailure(constrainedFood)) {
+      return [
+        {
+          message: `constraint failure encountered for ingredient ${ingredient["@id"]} / ${ingredient["http://rdfs.co/bevon/food"]}`,
+        },
+        ...failures(constrainedFood),
+      ];
+    }
     return {
       ...ingredient,
-      "http://rdfs.co/bevon/food": constrainIngredientFood(food),
+      "http://rdfs.co/bevon/food": constrainedFood,
       "http://rdfs.co/bevon/quantity": quant,
     };
   }
 }
 
-export function constrainIngredientFood(food: Food): AppIngredientFood {
+export function constrainIngredientFood(
+  food: Food
+): AppIngredientFood | ConstraintFailure[] {
   if (!food["@id"]) {
     throw new Error("id is required for ingredient food");
   }
@@ -103,14 +152,27 @@ export function constrainIngredientFood(food: Food): AppIngredientFood {
     );
   }
 
+  const label = constrainAppLabel(food);
+
+  if (isFailure(label)) {
+    return [
+      {
+        message: `constraint failure for food ${food["@id"]}`,
+      },
+      ...label,
+    ];
+  }
+
   return {
     ...food,
     "@id": food["@id"],
-    "http://www.w3.org/2000/01/rdf-schema#label": constrainAppLabel(food),
+    "http://www.w3.org/2000/01/rdf-schema#label": label,
   };
 }
 
-function constrainAppLabel(thing: any): string | LocaleString | LocaleString[] {
+function constrainAppLabel(
+  thing: any
+): string | LocaleString | LocaleString[] | ConstraintFailure[] {
   if (!thing["http://www.w3.org/2000/01/rdf-schema#label"]) {
     throw new Error("label is required for ingredient thing");
   }
@@ -134,9 +196,6 @@ function constrainAppLabel(thing: any): string | LocaleString | LocaleString[] {
     "http://www.w3.org/2000/01/rdf-schema#label",
     1
   ) as LocaleString[]; // we know the array does not contain strings
-  if (isFailure(langLabel)) {
-    throw new Error(`constraint failure: ${failures(langLabel)}`);
-  }
 
   return langLabel;
 }
@@ -148,31 +207,35 @@ export function isLocaleString<T>(s: T | LocaleString): s is LocaleString {
 
 export function constrainQuantitativeValue(
   quant: QuantitativeValue
-): AppQuantitativeValue {
-  if (!quant["http://purl.org/goodrelations/v1#hasUnitOfMeasurement"]) {
-    throw new Error("hasUnitOfMeasurement required: " + JSON.stringify(quant));
-  }
-  if (
-    quant["http://purl.org/goodrelations/v1#hasValue"] === undefined ||
-    quant["http://purl.org/goodrelations/v1#hasValue"] === null
-  ) {
-    throw new Error(`hasValue required ${JSON.stringify(quant)}`);
-  }
-  const unit = single(
+): AppQuantitativeValue | ConstraintFailure[] {
+  const presentUnit = present(
     quant["http://purl.org/goodrelations/v1#hasUnitOfMeasurement"],
     "http://purl.org/goodrelations/v1#hasUnitOfMeasurement"
   );
-  const value = single(
+  const presentValue = present(
     quant["http://purl.org/goodrelations/v1#hasValue"],
     "http://purl.org/goodrelations/v1#hasValue"
   );
 
-  if (isFailure(unit) || isFailure(value)) {
-    throw new Error(`constraint failures: ${failures(unit, value)}`);
+  if (isFailure(presentUnit) || isFailure(presentValue)) {
+    return failures(presentUnit, presentValue);
+  }
+
+  const singleUnit = single(
+    presentUnit,
+    "http://purl.org/goodrelations/v1#hasUnitOfMeasurement"
+  );
+  const singleValue = single(
+    presentValue,
+    "http://purl.org/goodrelations/v1#hasValue"
+  );
+
+  if (isFailure(singleUnit) || isFailure(singleValue)) {
+    return failures(singleUnit, singleValue);
   }
   return {
-    "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": unit,
-    "http://purl.org/goodrelations/v1#hasValue": value,
+    "http://purl.org/goodrelations/v1#hasUnitOfMeasurement": singleUnit,
+    "http://purl.org/goodrelations/v1#hasValue": singleValue,
   };
 }
 
@@ -181,11 +244,25 @@ interface ConstraintFailure {
   property?: string;
 }
 
-function failures(...values: (any | ConstraintFailure)[]): string {
-  return JSON.stringify(values.filter(isFailure));
+export function constraintError(
+  constraintFailures: ConstraintFailure[]
+): never {
+  throw new Error(JSON.stringify(constraintFailures));
 }
 
-function isFailure<T>(
+function failures(
+  ...values: (any | ConstraintFailure[])[]
+): ConstraintFailure[] {
+  return values.filter(isFailure).flatMap((f) => f);
+}
+
+export function isFailure<T>(
+  value: T | ConstraintFailure[]
+): value is ConstraintFailure[] {
+  return Array.isArray(value) && value.filter(isFailureInternal).length > 0;
+}
+
+function isFailureInternal<T>(
   value: T | ConstraintFailure
 ): value is ConstraintFailure {
   const f = value as ConstraintFailure;
@@ -196,13 +273,30 @@ function isFailure<T>(
   );
 }
 
-function single<T>(val: T | T[], property: string): T | ConstraintFailure {
+function present<T>(
+  val: T | null | undefined,
+  property: string
+): T | ConstraintFailure[] {
+  if (val === null || val === undefined) {
+    return [
+      {
+        message: `${property} must be defined`,
+        property,
+      },
+    ] as ConstraintFailure[];
+  }
+  return val;
+}
+
+function single<T>(val: T | T[], property: string): T | ConstraintFailure[] {
   if (Array.isArray(val)) {
     if (val.length !== 1) {
-      return {
-        message: `${property} must have cardinality of 1 but had ${val.length}`,
-        property,
-      } as ConstraintFailure;
+      return [
+        {
+          message: `${property} must have cardinality of 1 but had ${val.length}`,
+          property,
+        },
+      ] as ConstraintFailure[];
     } else {
       return val[0];
     }
@@ -215,12 +309,14 @@ function minCardinality<T>(
   val: T,
   property: string,
   min: number
-): T | ConstraintFailure {
+): T | ConstraintFailure[] {
   if (Array.isArray(val) && val.length < min) {
-    return {
-      message: `${property} must have cardinality of at least ${min} but had ${val.length}`,
-      property,
-    } as ConstraintFailure;
+    return [
+      {
+        message: `${property} must have cardinality of at least ${min} but had ${val.length}`,
+        property,
+      },
+    ] as ConstraintFailure[];
   } else {
     return val;
   }

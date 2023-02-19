@@ -1,18 +1,22 @@
 import { displayQuantity } from "./glass";
 import { displayNameForFood } from "./jsonld/food";
 import { isA } from "./jsonld/types";
-// import { QuantitativeValue } from "./quantity";
 import * as full from "../dist/ontology/ontology.json";
 import {
   AppIngredient,
   constrainIngredient,
   constrainIngredientFood,
+  constraintError,
+  isFailure,
 } from "../ontology/constraints";
 import { Food, QuantitativeValue } from "../ontology/types";
 
 export function defaultIngredients(food: Food[]): AppIngredient[] {
   return food.map((f) => {
     const consF = constrainIngredientFood(f);
+    if (isFailure(consF)) {
+      throw constraintError(consF);
+    }
     if (isA(f, "http://kb.liquorpicker.com/Bitters", full)) {
       return {
         "http://rdfs.co/bevon/food": consF,

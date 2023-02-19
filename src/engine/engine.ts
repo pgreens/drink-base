@@ -3,6 +3,8 @@ import {
   constrainIngredient,
   AppCocktail,
   constrainCocktail,
+  isFailure,
+  constraintError,
 } from "../../ontology/constraints";
 import { Cocktail } from "../../ontology/types";
 import { Glass } from "../glass";
@@ -32,7 +34,7 @@ export function match(glass: Glass, doc: JsonLdObject[]): [string, number] {
 }
 
 export function buildSpace(doc: JsonLdObject[]): VectorWrapper[] {
-  const drinks: AppCocktail[] = doc
+  const constrainedDrinks = doc
     .filter((thing) =>
       isAnIndividualOfType(thing, "http://rdfs.co/bevon/Cocktail", doc)
     )
@@ -111,6 +113,19 @@ export function buildSpace(doc: JsonLdObject[]): VectorWrapper[] {
                           },
                         },
                         {
+                          type: "http://purl.org/goodrelations/v1#QuantitativeValueFloat",
+                          query: {
+                            properties: [
+                              {
+                                name: "http://purl.org/goodrelations/v1#hasUnitOfMeasurement",
+                              },
+                              {
+                                name: "http://purl.org/goodrelations/v1#hasValue",
+                              },
+                            ],
+                          },
+                        },
+                        {
                           type: "http://purl.org/goodrelations/v1#QuantitativeValue",
                           query: {
                             properties: [
@@ -137,15 +152,32 @@ export function buildSpace(doc: JsonLdObject[]): VectorWrapper[] {
     })
     .map(constrainCocktail);
 
+  if (constrainedDrinks.filter(isFailure).length > 0) {
+    constraintError(constrainedDrinks.filter(isFailure).flatMap((f) => f));
+  }
+
+  const drinks = constrainedDrinks.filter(
+    (d): d is AppCocktail => !isFailure(d)
+  );
+
   return drinks.map((drink) => {
     if (!drink["http://rdfs.co/bevon/ingredient"]) {
       throw new Error("Ingredients are required!");
     }
     const appIngredients =
       drink["http://rdfs.co/bevon/ingredient"].map(constrainIngredient);
+
+    if (isFailure(appIngredients)) {
+      throw constraintError(appIngredients);
+    }
+
     return {
       "@id": drink["@id"] || "",
-      v: magnitudeOne(vectorOf(appIngredients)),
+      v: magnitudeOne(
+        vectorOf(
+          appIngredients.filter((i): i is AppIngredient => !isFailure(i))
+        )
+      ),
     };
   });
 }
