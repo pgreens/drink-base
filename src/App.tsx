@@ -20,6 +20,7 @@ import {
 } from "../ontology/constraints";
 import { Unit } from "./quantity";
 import { displayNameForFood } from "./jsonld/food";
+import { cocktailById } from "./jsonld/cocktails";
 
 const foods = ontology
   .filter((thing) =>
@@ -95,7 +96,7 @@ export function App(): JSX.Element {
   };
   const onMix = () => {
     const [id, dist] = match(glass, ontology);
-    const def = ontology.find((thing) => thing["@id"] === id);
+    const def = cocktailById(id, ontology);
     if (!def) {
       throw new Error(`no definition found for ${id}`);
     }
