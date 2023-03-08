@@ -26,7 +26,7 @@ export default function Ingredients({
   };
 
   return (
-    <section className="ingredient-options-list">
+    <section className="Ingredients">
       <label className="ingredient-search-label" htmlFor="ingredient-search">
         Search ingredients
       </label>

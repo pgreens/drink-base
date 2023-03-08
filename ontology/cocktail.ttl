@@ -208,7 +208,7 @@
 
 :BasicScotch a bevon:ScotchWhisky, :LiquidMixin ;
   rdfs:label "Scotch"@en ;
-  :color "5bb2e" .
+  :color "ffec85" .
 
 :CrèmeDeViolette a bevon:Liqueur, :LiquidMixin ;
   rdfs:label "Crème de Violette"@en ;

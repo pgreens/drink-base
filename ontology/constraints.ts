@@ -1,4 +1,4 @@
-import { JsonLdString, LocaleString } from "../src/jsonld/jsonld";
+import { LocaleString } from "../src/jsonld/jsonld";
 import {
   Bevon_Ingredient,
   Cocktail,
