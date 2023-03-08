@@ -114,7 +114,7 @@ export default function Glass3D({
           const solidQuant = new THREE.Quaternion();
           solidQuant.setFromAxisAngle(
             new THREE.Vector3(0, 1, 0),
-            solidSpacingAngle * i + (Math.PI / 8)
+            solidSpacingAngle * i + Math.PI / 8
           );
           if (
             ingredient["http://rdfs.co/bevon/food"]["@id"] ===
@@ -128,7 +128,11 @@ export default function Glass3D({
                   position: new THREE.Vector3(30, liquidTop, 0).applyQuaternion(
                     solidQuant
                   ),
-                  rotation: new THREE.Euler(0, solidSpacingAngle * i + (Math.PI / 8), 0),
+                  rotation: new THREE.Euler(
+                    0,
+                    solidSpacingAngle * i + Math.PI / 8,
+                    0
+                  ),
                   renderOrder: i,
                 }}
               />
@@ -146,7 +150,9 @@ export default function Glass3D({
                   liquidTop + 5,
                   0
                 ).applyQuaternion(solidQuant)}
-                rotation={new THREE.Euler(0, solidSpacingAngle * i + (Math.PI / 8), 0)}
+                rotation={
+                  new THREE.Euler(0, solidSpacingAngle * i + Math.PI / 8, 0)
+                }
                 texture={texture}
               />
             );
@@ -163,7 +169,9 @@ export default function Glass3D({
                   liquidTop + 5,
                   0
                 ).applyQuaternion(solidQuant)}
-                rotation={new THREE.Euler(0, solidSpacingAngle * i + (Math.PI / 8), 0)}
+                rotation={
+                  new THREE.Euler(0, solidSpacingAngle * i + Math.PI / 8, 0)
+                }
                 texture={texture}
                 orange={true}
               />
@@ -216,7 +224,11 @@ export default function Glass3D({
                     liquidTop - 5,
                     0
                   ).applyQuaternion(solidQuant),
-                  rotation: new THREE.Euler(0, solidSpacingAngle * i + (Math.PI / 8), 0),
+                  rotation: new THREE.Euler(
+                    0,
+                    solidSpacingAngle * i + Math.PI / 8,
+                    0
+                  ),
                   renderOrder: i,
                 }}
               />
@@ -235,7 +247,11 @@ export default function Glass3D({
                     liquidTop - 5,
                     0
                   ).applyQuaternion(solidQuant),
-                  rotation: new THREE.Euler(0, solidSpacingAngle * i + (Math.PI / 8), 0),
+                  rotation: new THREE.Euler(
+                    0,
+                    solidSpacingAngle * i + Math.PI / 8,
+                    0
+                  ),
                   renderOrder: i,
                 }}
               />
@@ -253,6 +269,29 @@ export default function Glass3D({
                 renderOrder: i,
               }}
             />
+          );
+        })}
+        {solids.length && (
+          <mesh position={new THREE.Vector3(40, -30, 10)}>
+            <Text color={0xffffff} anchorX="left" anchorY="top" fontSize={3}>
+              and
+            </Text>
+          </mesh>
+        )}
+        {solids.map((ingredient, i) => {
+          return (
+            <React.Fragment key={`desc-${i}`}>
+              <mesh position={new THREE.Vector3(40, -34 - i * 4, 10)}>
+                <Text
+                  color={0xffffff}
+                  anchorX="left"
+                  anchorY="top"
+                  fontSize={3}
+                >
+                  {displayNameForIngredient(ingredient, "en")}
+                </Text>
+              </mesh>
+            </React.Fragment>
           );
         })}
         {liquids.map((ingredient, i) => (
