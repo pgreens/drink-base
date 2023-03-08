@@ -116,7 +116,11 @@ export function App(): JSX.Element {
     <>
       <h1>cocktail</h1>
       <figure>
-        <Glass3D glass={glass} describedById="text-description" />
+        <Glass3D
+          glass={glass}
+          describedById="text-description"
+          ontology={ontology}
+        />
         <figcaption id="text-description">
           <GlassText glass={glass} />
         </figcaption>
