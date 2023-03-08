@@ -272,28 +272,52 @@ export default function Glass3D({
           );
         })}
         {solids.length && (
-          <mesh position={new THREE.Vector3(40, -30, 10)}>
+          <mesh
+            position={
+              new THREE.Vector3(
+                40,
+                positions.length === 0 ? 0 : positions[0][0] - 6,
+                10
+              )
+            }
+          >
             <Text color={0xffffff} anchorX="left" anchorY="top" fontSize={3}>
               and
             </Text>
           </mesh>
         )}
-        {solids.map((ingredient, i) => {
-          return (
-            <React.Fragment key={`desc-${i}`}>
-              <mesh position={new THREE.Vector3(40, -34 - i * 4, 10)}>
-                <Text
-                  color={0xffffff}
-                  anchorX="left"
-                  anchorY="top"
-                  fontSize={3}
+        {glass.contents
+          .filter((ingredient) => {
+            return !isA(
+              ingredient["http://rdfs.co/bevon/food"],
+              "http://kb.liquorpicker.com/LiquidMixin",
+              ontology
+            );
+          })
+          .map((ingredient, i) => {
+            return (
+              <React.Fragment key={`desc-${i}`}>
+                <mesh
+                  position={
+                    new THREE.Vector3(
+                      40,
+                      positions.length === 0 ? 0 : positions[0][0] - 10 - i * 4,
+                      10
+                    )
+                  }
                 >
-                  {displayNameForIngredient(ingredient, "en")}
-                </Text>
-              </mesh>
-            </React.Fragment>
-          );
-        })}
+                  <Text
+                    color={0xffffff}
+                    anchorX="left"
+                    anchorY="top"
+                    fontSize={3}
+                  >
+                    {displayNameForIngredient(ingredient, "en")}
+                  </Text>
+                </mesh>
+              </React.Fragment>
+            );
+          })}
         {liquids.map((ingredient, i) => (
           <LiquidIngredient3D
             key={i}
