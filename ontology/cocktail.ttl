@@ -390,9 +390,9 @@
     a food:Ingredient ;
     bevon:food :FreshLemonJuice ;
     bevon:quantity [
-      a gr:QuantitativeValueInteger ;
+      a gr:QuantitativeValueFloat ;
       gr:hasUnitOfMeasurement "OZA" ;
-      gr:hasValue "0.75"^^xsd:int
+      gr:hasValue "0.75"^^xsd:float
     ]
   ] ,
   [
