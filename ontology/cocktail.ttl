@@ -431,7 +431,7 @@
   rdfs:label "Sazerac"@en ;
   bevon:ingredient [
     a food:Ingredient ;
-    bevon:food :Absinthe ;
+    bevon:food :BasicAbsinthe ;
     bevon:quantity [
       a gr:QuantitativeValueInteger ;
       gr:hasUnitOfMeasurement "rinse" ;
