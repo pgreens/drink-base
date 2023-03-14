@@ -11,6 +11,7 @@ export interface OwlClass {
   "http://www.w3.org/2000/01/rdf-schema#label"?:
     | (string | LocaleString)
     | (string | LocaleString)[];
+  "@type"?: string | string[];
 }
 
 export interface QuantitativeValue {
