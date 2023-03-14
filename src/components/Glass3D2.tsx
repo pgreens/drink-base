@@ -13,15 +13,19 @@ import {
 import { convert } from "../quantity";
 import { isA } from "../jsonld/types";
 import { LemonTwist } from "./LemonTwist";
+import GlassText from "./GlassText";
+import Recipe from "./Recipe";
 
 const MIN_LINE_HEIGHT = 7;
 
-export default function Glass3D({
+export default function Glass3D2({
   glass,
+  backgroundColor,
   describedById,
   ontology,
 }: {
   glass: Glass;
+  backgroundColor: string;
   describedById: string;
   ontology: JsonLdObject[];
 }) {
@@ -76,7 +80,7 @@ export default function Glass3D({
           [lastTop + height, lastTop + height / 2],
         ];
       },
-      [[-40, 0]]
+      [[0, 0]]
     )
     // drop first entry, which was an initial value to make the reduction easier
     .slice(1);
@@ -96,18 +100,18 @@ export default function Glass3D({
     solids.length <= 12 ? Math.PI / 6 : Math.PI / (solids.length / 2);
 
   return (
-    <div className="glass">
+    <div className="Glass2">
       <Canvas
         camera={{
-          position: [0, 30, window.innerWidth * -0.011389 + 154.4417],
-          fov: 75,
+          position: [0, 0, 90],
+          fov: 60,
           quaternion: quaternion,
         }}
         shadows={true}
         aria-describedby={describedById}
       >
         <ambientLight color={0xaaaaaa} />
-        <color attach="background" args={["#15151a"]} />
+        <color attach="background" args={[backgroundColor]} />
         <ReferencePoint />
         {solids.map((ingredient, i) => {
           const solidQuant = new THREE.Quaternion();
@@ -270,53 +274,6 @@ export default function Glass3D({
             />
           );
         })}
-        {solids.length && (
-          <mesh
-            position={
-              new THREE.Vector3(
-                40,
-                positions.length === 0 ? 0 : positions[0][0] - 6,
-                10
-              )
-            }
-          >
-            <Text color={0xffffff} anchorX="left" anchorY="top" fontSize={3}>
-              and
-            </Text>
-          </mesh>
-        )}
-        {glass.contents
-          .filter((ingredient) => {
-            return !isA(
-              ingredient["http://rdfs.co/bevon/food"],
-              "http://kb.liquorpicker.com/LiquidMixin",
-              ontology
-            );
-          })
-          .map((ingredient, i) => {
-            return (
-              <React.Fragment key={`desc-${i}`}>
-                <mesh
-                  position={
-                    new THREE.Vector3(
-                      40,
-                      positions.length === 0 ? 0 : positions[0][0] - 10 - i * 4,
-                      10
-                    )
-                  }
-                >
-                  <Text
-                    color={0xffffff}
-                    anchorX="left"
-                    anchorY="top"
-                    fontSize={3}
-                  >
-                    {displayNameForIngredient(ingredient, "en")}
-                  </Text>
-                </mesh>
-              </React.Fragment>
-            );
-          })}
         {liquids.map((ingredient, i) => (
           <LiquidIngredient3D
             key={i}
@@ -327,47 +284,6 @@ export default function Glass3D({
               renderOrder: solids.length + i + 1,
             }}
           />
-        ))}
-        {liquids.map((ingredient, i) => (
-          <React.Fragment key={`desc-${i}`}>
-            <line>
-              <tubeGeometry
-                args={[
-                  // is there a way to do this with straight JSX
-                  // so we don't recreate these every render?
-                  new THREE.LineCurve3(
-                    new THREE.Vector3(40, positions[i][0] - 1, 10),
-                    new THREE.Vector3(60, textPositions[i] - 1, 10)
-                  ),
-                  1,
-                  0.05,
-                  8,
-                  false,
-                ]}
-              />
-              <lineBasicMaterial color={0xffffff} />
-            </line>
-            <line>
-              <tubeGeometry
-                args={[
-                  new THREE.LineCurve3(
-                    new THREE.Vector3(60, textPositions[i] - 1, 10),
-                    new THREE.Vector3(100, textPositions[i] - 1, 10)
-                  ),
-                  1,
-                  0.05,
-                  8,
-                  false,
-                ]}
-              />
-              <lineBasicMaterial color={0xffffff} />
-            </line>
-            <mesh position={[100, textPositions[i] - 2, 10]}>
-              <Text color={0xffffff} anchorX="right" anchorY="top" fontSize={3}>
-                {displayNameForIngredient(ingredient, "en")}
-              </Text>
-            </mesh>
-          </React.Fragment>
         ))}
       </Canvas>
     </div>
@@ -649,41 +565,17 @@ function SugarCube({
 }
 
 function ReferencePoint() {
-  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
   const pointRef = React.useRef<THREE.Mesh>(null!);
   const camVector = new THREE.Vector3();
 
   useFrame((state) => {
     state.camera.lookAt(pointRef.current.position);
     state.camera.position.lerp(
-      camVector.set(0, 30, windowWidth * -0.02 + 155), //
+      camVector.set(0, 60, 120), //
       0.1
-    );
-    state.camera.setViewOffset(
-      windowWidth,
-      window.innerHeight,
-      windowWidth * -0.01518 + 250,
-      0,
-      windowWidth,
-      window.innerHeight
     );
     state.camera.updateProjectionMatrix();
     return null;
-  });
-
-  const onResize = () => {
-    console.log("resizing");
-    setWindowWidth(window.innerWidth);
-  };
-
-  useEffect(() => {
-    if (!window) {
-      return;
-    }
-    window.addEventListener("resize", onResize);
-    return () => {
-      window.removeEventListener("resize", onResize);
-    };
   });
 
   return (

@@ -35,6 +35,8 @@ export function cocktailById(id: string, doc: JsonLdObject[]): AppCocktail {
                 query: {
                   properties: [
                     { name: "@id" },
+                    { name: "@type" },
+                    { name: "http://kb.liquorpicker.com/color" },
                     {
                       name: "http://www.w3.org/2000/01/rdf-schema#label",
                       query: {

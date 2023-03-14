@@ -12,6 +12,7 @@ import "./sanitize.css";
 import "./App.css";
 import { displayNameFor } from "./jsonld/jsonld";
 import {
+  AppCocktail,
   AppIngredient,
   AppIngredientFood,
   constrainIngredientFood,
@@ -21,6 +22,8 @@ import {
 import { Unit } from "./quantity";
 import { displayNameForFood } from "./jsonld/food";
 import { cocktailById } from "./jsonld/cocktails";
+import ResultPanel, { Result } from "./components/ResultPanel";
+import { empty, Optional } from "./optional";
 
 const foods = ontology
   .filter((thing) =>
@@ -45,20 +48,6 @@ const foods = ontology
     }
   });
 
-type Optional<T> =
-  | {
-      isPresent: false;
-    }
-  | {
-      isPresent: true;
-      value: T;
-    };
-function empty<T>(): Optional<T> {
-  return {
-    isPresent: false,
-  };
-}
-
 function nextUnit(unit: string): Unit {
   const us: [string, string][] = Object.entries(Unit);
   const curr = us.findIndex(([_key, value]) => value === unit);
@@ -72,7 +61,7 @@ export function App(): JSX.Element {
   const [ingredients, setIngredients] = React.useState(
     defaultIngredients(foods as Food[])
   );
-  const [result, setResult] = React.useState(empty<[string, number]>());
+  const [result, setResult] = React.useState(empty<Result>());
 
   const switchUnit = (ingredient: AppIngredient) => {
     setIngredients((curr: AppIngredient[]) => {
@@ -103,7 +92,7 @@ export function App(): JSX.Element {
     console.log("match", def, "distance:", dist);
     setResult({
       isPresent: true,
-      value: [displayNameFor(def, "en"), dist],
+      value: { cocktail: def, distance: dist },
     });
   };
 
@@ -132,51 +121,20 @@ export function App(): JSX.Element {
         }
         switchUnit={switchUnit}
       />
-      {result.isPresent ? (
-        <div className="glass-actions">
-          <button id="dump-button" onClick={reset}>
-            ↺
-          </button>
-          <div className="result">
-            {description(result.value[1])} {aOrAn(result.value[0])}{" "}
-            {result.value[0]}
-          </div>
-        </div>
-      ) : (
-        <div className="glass-actions">
-          <button id="dump-button" onClick={reset}>
-            ↺
-          </button>
-          <button id="mix-button" onClick={onMix}>
-            mix it →
-          </button>
-        </div>
-      )}
-      {/* <GlassText glass={glass} /> */}
+      <div className="glass-actions">
+        <button id="dump-button" onClick={reset}>
+          ↺
+        </button>
+        <button id="mix-button" onClick={onMix}>
+          mix it →
+        </button>
+      </div>
+      <ResultPanel
+        result={result}
+        userDrink={glass}
+        ontology={ontology}
+        onClose={() => setResult(empty())}
+      />
     </>
   );
-}
-
-function description(distance: number) {
-  if (distance < 0.03) {
-    return "This is";
-  } else if (distance < 0.2) {
-    return "This is close to";
-  } else if (distance < 0.3) {
-    return "Could be called";
-  } else {
-    return "Hmm... maybe";
-  }
-}
-
-function aOrAn(englishNoun: string): string {
-  const anLetters = ["a", "e", "i", "o", "u", "h"];
-  if (
-    englishNoun &&
-    englishNoun.length >= 1 &&
-    anLetters.includes(englishNoun.substring(0, 1).toLowerCase())
-  ) {
-    return "an";
-  }
-  return "a";
 }

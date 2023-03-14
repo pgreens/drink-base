@@ -202,3 +202,119 @@ figcaption {
   flex-grow: 1;
   text-align: center;
 }
+
+/* ResultPanel */
+
+.ResultPanel-backing-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 19;
+  background-color: #000;
+  opacity: 0.6;
+}
+
+.ResultPanel {
+  position: absolute;
+  width: 90vw;
+  height: 90vh;
+  left: 5vw;
+  top: 5vh;
+  padding: 20px;
+  border-style: solid;
+  border-color: #ccc;
+  border-width: 3px;
+  background-color: #313138;
+  z-index: 20;
+}
+
+.ResultPanel--not-active {
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  color: #fff;
+}
+
+.ResultPanel__sr-heading {
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  color: #fff;
+}
+
+.ResultPanel__result-text {
+  color: #fff;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.ResultPanel__result-cocktail-name {
+  color: #fff;
+  font-size: 4rem;
+}
+
+.ResultPanel .Glass2 {
+  width: 100%;
+  height: 300px;
+}
+
+.ResultPanel__recipe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .ResultPanel .Glass2 {
+    width: calc(50% - 20px);
+    min-width: 300px;
+    height: calc(100vh - 300px);
+  }
+
+  .ResultPanel__recipe {
+    flex-direction: row;
+  }
+}
+
+.ResultPanel .Recipe {
+  margin-top: -60px;
+  z-index: 30;
+}
+.Recipe {
+  font-size: 1rem;
+  text-align: left;
+  color: #fff;
+}
+
+.Recipe ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.ResultPanel__close-button {
+  position: absolute;
+  bottom: 20px;
+  width: calc(100% - 40px);
+  font-size: 40px;
+  font-weight: 300;
+  background-color: #15151a;
+  border-style: solid;
+  color: #838ca2;
+  border-width: 3px;
+  border-color: #838ca2;
+  border-radius: 6px;
+  height: 2em;
+  cursor: pointer;
+  padding-left: 20px;
+  padding-right: 20px;
+}

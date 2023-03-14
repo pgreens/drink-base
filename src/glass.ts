@@ -1,8 +1,18 @@
-import { AppIngredient, AppQuantitativeValue } from "../ontology/constraints";
+import {
+  AppCocktail,
+  AppIngredient,
+  AppQuantitativeValue,
+} from "../ontology/constraints";
 import { add, toString } from "./quantity";
 
 export interface Glass {
   readonly contents: AppIngredient[];
+}
+
+export function fromCocktail(cocktail: AppCocktail): Glass {
+  return {
+    contents: cocktail["http://rdfs.co/bevon/ingredient"],
+  };
 }
 
 export function addIngredient(glass: Glass, ingredient: AppIngredient): Glass {
@@ -52,14 +62,19 @@ export function totalQuantity(glass: Glass): AppQuantitativeValue {
     );
 }
 
-export function displayQuantity(quantity: number | AppQuantitativeValue): string {
+export function displayQuantity(
+  quantity: number | AppQuantitativeValue
+): string {
   if (typeof quantity === "number") {
     return String(quantity);
   }
   return toString(quantity);
 }
 
-function newQuant(i1: AppIngredient, i2: AppIngredient): number | AppQuantitativeValue {
+function newQuant(
+  i1: AppIngredient,
+  i2: AppIngredient
+): number | AppQuantitativeValue {
   if (
     typeof i1["http://rdfs.co/bevon/quantity"] === "number" &&
     typeof i2["http://rdfs.co/bevon/quantity"] === "number"
