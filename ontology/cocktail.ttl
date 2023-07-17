@@ -390,9 +390,9 @@
     a food:Ingredient ;
     bevon:food :FreshLemonJuice ;
     bevon:quantity [
-      a gr:QuantitativeValueInteger ;
+      a gr:QuantitativeValueFloat ;
       gr:hasUnitOfMeasurement "OZA" ;
-      gr:hasValue "0.75"^^xsd:int
+      gr:hasValue "0.75"^^xsd:float
     ]
   ] ,
   [
@@ -431,7 +431,7 @@
   rdfs:label "Sazerac"@en ;
   bevon:ingredient [
     a food:Ingredient ;
-    bevon:food :Absinthe ;
+    bevon:food :BasicAbsinthe ;
     bevon:quantity [
       a gr:QuantitativeValueInteger ;
       gr:hasUnitOfMeasurement "rinse" ;

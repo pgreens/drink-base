@@ -15,7 +15,12 @@ export function isA(
 
   // look at the type for individuals
   if (!thing["@type"].includes("http://www.w3.org/2002/07/owl#Class")) {
-    const typeDefs = doc.filter((o) => thing["@type"]?.includes(o["@id"]));
+    const typeDefs = doc.filter(
+      (o) =>
+        o["@id"] &&
+        thing["@type"] &&
+        (thing["@type"] === o["@id"] || thing["@type"].includes(o["@id"]))
+    );
     const found = typeDefs.find((def) => isA(def, owlClassId, doc));
     return found !== undefined;
   }
